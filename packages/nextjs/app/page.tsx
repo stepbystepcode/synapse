@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import {
+import { 
   CheckCircleIcon,
   CurrencyDollarIcon,
   DocumentTextIcon,
@@ -12,6 +12,8 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { Address, EtherInput, InputBase } from "~~/components/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { parseEther } from "viem";
 
 // 任务状态枚举
 enum TaskState {
@@ -40,79 +42,148 @@ const Home: NextPage = () => {
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [resultURI, setResultURI] = useState("");
+  const [message, setMessage] = useState("");
 
-  // 模拟任务数据
-  const mockTasks: Task[] = [
-    {
-      id: 1,
-      creator: "0x1234567890123456789012345678901234567890",
-      worker: "0x0000000000000000000000000000000000000000",
-      prompt: "生成一张未来科技风格的城市夜景图片",
-      resultURI: "",
-      reward: BigInt("1000000000000000000"),
-      state: TaskState.Open,
-    },
-    {
-      id: 2,
-      creator: "0x0987654321098765432109876543210987654321",
-      worker: "0x1111111111111111111111111111111111111111",
-      prompt: "设计一个简约风格的logo，主题是环保和可持续发展",
-      resultURI: "https://cataas.com/cat/says/Logo%20Design",
-      reward: BigInt("2000000000000000000"),
-      state: TaskState.InProgress,
-    },
-  ];
+  // 读取合约数据
+  const { data: taskCount } = useScaffoldReadContract({
+    contractName: "AgentTaskManagerSimple",
+    functionName: "getTaskCount",
+  });
 
+  // 写入合约
+  const { writeContractAsync: createTask } = useScaffoldWriteContract({
+    contractName: "AgentTaskManagerSimple",
+  });
+
+  const { writeContractAsync: acceptTask } = useScaffoldWriteContract({
+    contractName: "AgentTaskManagerSimple",
+  });
+
+  const { writeContractAsync: completeTask } = useScaffoldWriteContract({
+    contractName: "AgentTaskManagerSimple",
+  });
+
+  const { writeContractAsync: approveTask } = useScaffoldWriteContract({
+    contractName: "AgentTaskManagerSimple",
+  });
+
+  // 读取所有任务
+  const { data: allTasks, refetch: refetchTasks } = useScaffoldReadContract({
+    contractName: "AgentTaskManagerSimple",
+    functionName: "getAllTasks",
+    args: [BigInt(0), BigInt(100)], // 读取前100个任务
+  });
+
+  // 当任务数据更新时，转换格式并设置到本地状态
   useEffect(() => {
-    setTasks(mockTasks);
-  }, []);
+    if (allTasks && allTasks.length > 0) {
+      const formattedTasks: Task[] = allTasks.map((task: any, index: number) => ({
+        id: index,
+        creator: task.creator,
+        worker: task.worker,
+        prompt: task.prompt,
+        resultURI: task.resultURI,
+        reward: task.reward,
+        state: task.state,
+      }));
+      setTasks(formattedTasks);
+    } else {
+      setTasks([]);
+    }
+  }, [allTasks]);
 
   const handleCreateTask = async () => {
-    if (!newTaskPrompt || !newTaskReward) return;
+    if (!connectedAddress) {
+      setMessage("请先连接钱包");
+      return;
+    }
+
+    if (!newTaskPrompt.trim()) {
+      setMessage("请输入任务提示词");
+      return;
+    }
 
     setIsCreatingTask(true);
+    setMessage("");
 
-    const newTask: Task = {
-      id: tasks.length + 1,
-      creator: connectedAddress || "0x0000000000000000000000000000000000000000",
-      worker: "0x0000000000000000000000000000000000000000",
-      prompt: newTaskPrompt,
-      resultURI: "",
-      reward: BigInt(newTaskReward),
-      state: TaskState.Open,
-    };
+    try {
+      const rewardAmount = parseEther(newTaskReward);
+      
+      setMessage("创建任务中...");
+      await createTask({
+        functionName: "createTask",
+        args: [newTaskPrompt],
+        value: rewardAmount,
+      });
 
-    setTasks([...tasks, newTask]);
-    setNewTaskPrompt("");
-    setNewTaskReward("");
-    setIsCreatingTask(false);
+      setMessage("✅ 任务创建成功！");
+      setNewTaskPrompt("");
+      setNewTaskReward("");
+      
+      // 刷新任务列表
+      await refetchTasks();
+    } catch (error) {
+      console.error("创建任务失败:", error);
+      setMessage(`❌ 创建任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+    } finally {
+      setIsCreatingTask(false);
+    }
   };
 
   const handleAcceptTask = async (taskId: number) => {
-    setTasks(
-      tasks.map(task =>
-        task.id === taskId
-          ? {
-              ...task,
-              worker: connectedAddress || "0x0000000000000000000000000000000000000000",
-              state: TaskState.InProgress,
-            }
-          : task,
-      ),
-    );
+    try {
+      setMessage("接受任务中...");
+      await acceptTask({
+        functionName: "acceptTask",
+        args: [BigInt(taskId)],
+      });
+      setMessage("✅ 任务接受成功！");
+      
+      // 刷新任务列表
+      await refetchTasks();
+    } catch (error) {
+      console.error("接受任务失败:", error);
+      setMessage(`❌ 接受任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+    }
   };
 
   const handleSubmitResult = async (taskId: number) => {
     if (!resultURI) return;
-
-    setTasks(tasks.map(task => (task.id === taskId ? { ...task, resultURI, state: TaskState.Completed } : task)));
-
-    setResultURI("");
-    setSelectedTask(null);
+    
+    try {
+      setMessage("提交成果中...");
+      await completeTask({
+        functionName: "completeTask",
+        args: [BigInt(taskId), resultURI],
+      });
+      setMessage("✅ 成果提交成功！");
+      
+      // 刷新任务列表
+      await refetchTasks();
+      
+      setResultURI("");
+      setSelectedTask(null);
+    } catch (error) {
+      console.error("提交成果失败:", error);
+      setMessage(`❌ 提交成果失败: ${error instanceof Error ? error.message : "未知错误"}`);
+    }
   };
 
   const handleApproveTask = async (taskId: number) => {
-    setTasks(tasks.map(task => (task.id === taskId ? { ...task, state: TaskState.Approved } : task)));
+    try {
+      setMessage("审核任务中...");
+      await approveTask({
+        functionName: "approveTask",
+        args: [BigInt(taskId)],
+      });
+      setMessage("✅ 任务审核并支付成功！");
+      
+      // 刷新任务列表
+      await refetchTasks();
+    } catch (error) {
+      console.error("审核任务失败:", error);
+      setMessage(`❌ 审核任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+    }
   };
 
   const getTaskStateBadge = (state: TaskState) => {
@@ -137,25 +208,38 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="min-h-screen bg-base-200">
-        {/* 头部 */}
-        <div className="bg-base-100 shadow-lg">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div>
-                <h1 className="text-3xl font-bold text-primary">🤖 AI Agent 任务市场</h1>
-                <p className="text-base-content/70 mt-2">在 Monad 测试网上发布和接受 AI 任务</p>
-              </div>
-              <div className="mt-4 md:mt-0">
-                <div className="text-center">
-                  <p className="text-sm text-base-content/70">连接地址:</p>
-                  <Address address={connectedAddress} />
-                </div>
-              </div>
-            </div>
+        {/* 页面标题 */}
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-primary mb-4">🤖 AI Agent 任务市场</h1>
+            <p className="text-xl text-base-content/70">在 Monad 测试网上发布和接受 AI 任务</p>
           </div>
         </div>
 
         <div className="container mx-auto px-4 py-8">
+          {/* 状态信息 */}
+          <div className="bg-base-100 p-6 rounded-lg mb-8 shadow-xl">
+            <h2 className="text-xl font-semibold mb-4">📊 当前状态</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-base-content/70">钱包地址:</p>
+                <Address address={connectedAddress} />
+              </div>
+              <div>
+                <p className="text-sm text-base-content/70">任务总数:</p>
+                <p className="font-bold text-lg">{taskCount?.toString() || "0"}</p>
+              </div>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <button 
+                className="btn btn-outline btn-sm"
+                onClick={() => refetchTasks()}
+              >
+                🔄 刷新任务列表
+              </button>
+            </div>
+          </div>
+
           {/* 创建任务表单 */}
           <div className="card bg-base-100 shadow-xl mb-8">
             <div className="card-body">
@@ -185,7 +269,7 @@ const Home: NextPage = () => {
                 <button
                   className="btn btn-primary"
                   onClick={handleCreateTask}
-                  disabled={isCreatingTask || !newTaskPrompt || !newTaskReward}
+                  disabled={isCreatingTask || !newTaskPrompt || !newTaskReward || !connectedAddress}
                 >
                   {isCreatingTask ? (
                     <span className="loading loading-spinner loading-sm"></span>
@@ -197,6 +281,17 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
+
+          {/* 消息显示 */}
+          {message && (
+            <div className={`alert mb-6 ${
+              message.includes("成功") ? "alert-success" : 
+              message.includes("失败") ? "alert-error" : 
+              "alert-info"
+            }`}>
+              <span>{message}</span>
+            </div>
+          )}
 
           {/* 任务列表 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -262,21 +357,33 @@ const Home: NextPage = () => {
                   {/* 操作按钮 */}
                   <div className="card-actions justify-end mt-4">
                     {task.state === TaskState.Open && task.creator !== connectedAddress && (
-                      <button className="btn btn-success btn-sm" onClick={() => handleAcceptTask(task.id)}>
+                      <button 
+                        className="btn btn-success btn-sm" 
+                        onClick={() => handleAcceptTask(task.id)}
+                        disabled={!connectedAddress}
+                      >
                         <CheckCircleIcon className="h-4 w-4" />
                         接受任务
                       </button>
                     )}
 
                     {task.state === TaskState.InProgress && task.worker === connectedAddress && (
-                      <button className="btn btn-warning btn-sm" onClick={() => setSelectedTask(task)}>
+                      <button 
+                        className="btn btn-warning btn-sm" 
+                        onClick={() => setSelectedTask(task)}
+                        disabled={!connectedAddress}
+                      >
                         <DocumentTextIcon className="h-4 w-4" />
                         提交成果
                       </button>
                     )}
 
                     {task.state === TaskState.Completed && task.creator === connectedAddress && (
-                      <button className="btn btn-primary btn-sm" onClick={() => handleApproveTask(task.id)}>
+                      <button 
+                        className="btn btn-primary btn-sm" 
+                        onClick={() => handleApproveTask(task.id)}
+                        disabled={!connectedAddress}
+                      >
                         <CheckCircleIcon className="h-4 w-4" />
                         审核并支付
                       </button>
@@ -340,6 +447,23 @@ const Home: NextPage = () => {
               <p className="text-base-content/70">成为第一个发布任务的人吧！</p>
             </div>
           )}
+
+          {/* 合约信息 */}
+          <div className="bg-base-100 p-6 rounded-lg mt-8 shadow-xl">
+            <h2 className="text-xl font-semibold mb-4">🔗 合约信息</h2>
+            <div className="space-y-2">
+              <p><strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5</p>
+            </div>
+            <div className="mt-4 p-4 bg-base-200 rounded-lg">
+              <h3 className="font-semibold mb-2">💡 简化优势</h3>
+              <ul className="text-sm space-y-1">
+                <li>• 直接使用原生 MON 代币，无需 MockUSDC</li>
+                <li>• 创建任务时直接发送 MON，无需授权步骤</li>
+                <li>• 更简单的前端集成和用户体验</li>
+                <li>• 减少 Gas 费用（无需两次交易）</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </>
