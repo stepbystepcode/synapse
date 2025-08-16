@@ -44,12 +44,6 @@ const Home: NextPage = () => {
   const [resultURI, setResultURI] = useState("");
   const [message, setMessage] = useState("");
 
-  // // Read contract data
-  // const { data: taskCount } = useScaffoldReadContract({
-  //   contractName: "AgentTaskManagerSimple",
-  //   functionName: "getTaskCount",
-  // });
-
   // Write contract
   const { writeContractAsync: createTask } = useScaffoldWriteContract({
     contractName: "AgentTaskManagerSimple",
@@ -66,36 +60,6 @@ const Home: NextPage = () => {
   const { writeContractAsync: approveTask } = useScaffoldWriteContract({
     contractName: "AgentTaskManagerSimple",
   });
-
-  // Test contract status function
-  // const testContractStatus = async () => {
-  //   try {
-  //     setMessage("Testing contract status...");
-
-  //     // Check task count and task list
-  //     if (taskCount && Number(taskCount) > 0) {
-  //       setMessage(`✅ Contract status normal, currently has ${taskCount.toString()} tasks`);
-  //       console.log("Task count:", taskCount.toString());
-  //       console.log("Current task list:", tasks);
-
-  //       // Try to check if contract is paused
-  //       if (tasks.length > 0) {
-  //         const firstTask = tasks[0];
-  //         if (firstTask.state === TaskState.Open && firstTask.creator !== connectedAddress) {
-  //           setMessage(`✅ Contract status normal, task #${firstTask.id} can be accepted`);
-  //         } else {
-  //           setMessage(`⚠️ Task #${firstTask.id} status: ${["Open", "In Progress", "Completed", "Approved"][firstTask.state]}`);
-  //         }
-  //       }
-  //     } else if (taskCount === BigInt(0)) {
-  //       setMessage("✅ Contract status normal, but no tasks currently");
-  //     } else {
-  //       setMessage("⚠️ Unable to read task count, contract may have issues");
-  //     }
-  //   } catch (error) {
-  //     setMessage(`❌ Contract status test failed: ${error instanceof Error ? error.message : "Unknown error"}`);
-  //   }
-  // };
 
   // Read all tasks
   const { data: allTasks, refetch: refetchTasks } = useScaffoldReadContract({
@@ -219,15 +183,35 @@ const Home: NextPage = () => {
   const getTaskStateBadge = (state: TaskState) => {
     switch (state) {
       case TaskState.Open:
-        return <span className="badge badge-info">Open</span>;
+        return (
+          <span className="inline-block px-3 py-1 text-sm font-bold bg-blue-500 text-white border-4 border-black transform rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            OPEN
+          </span>
+        );
       case TaskState.InProgress:
-        return <span className="badge badge-warning">In Progress</span>;
+        return (
+          <span className="inline-block px-3 py-1 text-sm font-bold bg-yellow-400 text-black border-4 border-black transform -rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            IN PROGRESS
+          </span>
+        );
       case TaskState.Completed:
-        return <span className="badge badge-secondary">Completed</span>;
+        return (
+          <span className="inline-block px-3 py-1 text-sm font-bold bg-gray-400 text-black border-4 border-black transform rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            COMPLETED
+          </span>
+        );
       case TaskState.Approved:
-        return <span className="badge badge-success">Paid</span>;
+        return (
+          <span className="inline-block px-3 py-1 text-sm font-bold bg-green-500 text-white border-4 border-black transform -rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            PAID
+          </span>
+        );
       default:
-        return <span className="badge">Unknown</span>;
+        return (
+          <span className="inline-block px-3 py-1 text-sm font-bold bg-gray-500 text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            UNKNOWN
+          </span>
+        );
     }
   };
 
@@ -237,84 +221,57 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-base-200">
+      <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 p-4">
         {/* Page title */}
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary mb-4">🤖 AI Agent Task Market</h1>
-            <p className="text-xl text-base-content/70">Publish and accept AI tasks on Monad testnet</p>
+          <div className="text-center">
+            <div className="inline-block bg-white border-8 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform rotate-2 mb-6">
+              <h1 className="text-6xl font-black text-black mb-4 tracking-tight">🤖 AI AGENT</h1>
+              <h2 className="text-4xl font-black text-red-600 mb-2">TASK MARKET</h2>
+              <p className="text-xl font-bold text-gray-700">Publish and accept AI tasks on Monad testnet</p>
+            </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
-          {/* Status information
-          <div className="bg-base-100 p-6 rounded-lg mb-8 shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">📊 Current Status</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-base-content/70">Wallet Address:</p>
-                <Address address={connectedAddress} />
-              </div>
-              <div>
-                <p className="text-sm text-base-content/70">Total Tasks:</p>
-                <p className="font-bold text-lg">{taskCount?.toString() || "0"}</p>
-              </div>
-            </div>
-            
-            <div className="mt-4 flex justify-end gap-2">
-              <button 
-                className="btn btn-outline btn-sm"
-                onClick={() => refetchTasks()}
-              >
-                🔄 Refresh Task List
-              </button>
-              <button 
-                className="btn btn-outline btn-sm"
-                onClick={testContractStatus}
-              >
-                🔍 Test Contract Status
-              </button>
-
-            </div>
-          </div> */}
-
+        <div className="container mx-auto px-4 py-8 space-y-8">
           {/* Create task form */}
-          <div className="card bg-base-100 shadow-xl mb-8">
-            <div className="card-body">
-              <h2 className="card-title text-xl mb-4">
-                <PlusIcon className="h-6 w-6 text-primary" />
-                Publish New Task
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="label">
-                    <span className="label-text">Task Description (Prompt)</span>
-                  </label>
+          <div className="bg-white border-8 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform -rotate-1 mb-[80px]">
+            <div className="flex items-center mb-6">
+              <div className="bg-yellow-400 border-4 border-black p-3 mr-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <PlusIcon className="h-8 w-8 text-black" />
+              </div>
+              <h2 className="text-3xl font-black text-black">PUBLISH NEW TASK</h2>
+            </div>
+
+            <div className="flex items-end gap-6">
+              <div className="flex-1">
+                <label className="block text-lg font-bold text-black mb-3">TASK DESCRIPTION (PROMPT)</label>
+                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0">
                   <InputBase
                     placeholder="e.g., Generate a futuristic city nightscape image"
                     value={newTaskPrompt}
                     onChange={setNewTaskPrompt}
                   />
                 </div>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Reward Amount (MON)</span>
-                  </label>
+              </div>
+              <div className="flex-1">
+                <label className="block text-lg font-bold text-black mb-3">REWARD AMOUNT (MON)</label>
+                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0 [&>div>button]:bg-transparent [&>div>button]:border-0 [&>div>button]:hover:bg-transparent">
                   <EtherInput placeholder="0.1" value={newTaskReward} onChange={setNewTaskReward} />
                 </div>
               </div>
-              <div className="card-actions justify-end mt-4">
+              <div>
                 <button
-                  className="btn btn-primary"
+                  className="bg-green-500 hover:bg-green-600 text-white font-black text-lg px-8 py-4 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   onClick={handleCreateTask}
                   disabled={isCreatingTask || !newTaskPrompt || !newTaskReward || !connectedAddress}
                 >
                   {isCreatingTask ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="loading loading-spinner loading-md"></span>
                   ) : (
-                    <PlusIcon className="h-5 w-5" />
+                    <PlusIcon className="h-6 w-6 mr-2" />
                   )}
-                  {isCreatingTask ? "Creating..." : "Publish Task"}
+                  {isCreatingTask ? "CREATING..." : "PUBLISH TASK"}
                 </button>
               </div>
             </div>
@@ -323,116 +280,121 @@ const Home: NextPage = () => {
           {/* Message display */}
           {message && (
             <div
-              className={`alert mb-6 ${
+              className={`p-6 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transform rotate-1 ${
                 message.includes("successfully")
-                  ? "alert-success"
+                  ? "bg-green-400 text-black"
                   : message.includes("Failed")
-                    ? "alert-error"
-                    : "alert-info"
+                    ? "bg-red-400 text-white"
+                    : "bg-blue-400 text-white"
               }`}
             >
-              <span>{message}</span>
+              <span className="text-lg font-bold">{message}</span>
             </div>
           )}
 
           {/* Task list */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {tasks.map(task => (
-              <div key={task.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-                <div className="card-body">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="card-title text-lg">Task #{task.id}</h3>
-                    {getTaskStateBadge(task.state)}
+              <div
+                key={task.id}
+                className="bg-white border-8 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-2 transition-all"
+              >
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-2xl font-black text-black">TASK #{task.id}</h3>
+                  {getTaskStateBadge(task.state)}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-lg font-bold text-black mb-2">TASK DESCRIPTION:</label>
+                    <div className="bg-gray-100 border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <p className="text-sm font-bold">{task.prompt}</p>
+                    </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <div>
-                      <label className="label">
-                        <span className="label-text font-semibold">Task Description:</span>
-                      </label>
-                      <p className="text-sm bg-base-200 p-3 rounded-lg">{task.prompt}</p>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-blue-500 border-2 border-black p-1">
+                        <UserIcon className="h-4 w-4 text-white" />
+                      </div>
+                      <span className="text-sm font-bold">CREATOR:</span>
                     </div>
+                    <Address address={task.creator} format="short" />
+                  </div>
 
+                  {task.worker !== "0x0000000000000000000000000000000000000000" && (
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
-                        <UserIcon className="h-4 w-4 text-primary" />
-                        <span className="text-sm">Creator:</span>
-                      </div>
-                      <Address address={task.creator} format="short" />
-                    </div>
-
-                    {task.worker !== "0x0000000000000000000000000000000000000000" && (
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <UserIcon className="h-4 w-4 text-success" />
-                          <span className="text-sm">Worker:</span>
+                        <div className="bg-green-500 border-2 border-black p-1">
+                          <UserIcon className="h-4 w-4 text-white" />
                         </div>
-                        <Address address={task.worker} format="short" />
+                        <span className="text-sm font-bold">WORKER:</span>
                       </div>
-                    )}
-
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <CurrencyDollarIcon className="h-4 w-4 text-warning" />
-                        <span className="text-sm">Reward:</span>
-                      </div>
-                      <span className="font-bold text-lg text-primary">{formatReward(task.reward)} MON</span>
+                      <Address address={task.worker} format="short" />
                     </div>
+                  )}
 
-                    {task.resultURI && (
-                      <div>
-                        <label className="label">
-                          <span className="label-text font-semibold">Result Link:</span>
-                        </label>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-yellow-400 border-2 border-black p-1">
+                        <CurrencyDollarIcon className="h-4 w-4 text-black" />
+                      </div>
+                      <span className="text-sm font-bold">REWARD:</span>
+                    </div>
+                    <span className="font-black text-2xl text-red-600">{formatReward(task.reward)} MON</span>
+                  </div>
+
+                  {task.resultURI && (
+                    <div>
+                      <label className="block text-lg font-bold text-black mb-2">RESULT LINK:</label>
+                      <div className="bg-blue-100 border-4 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         <a
                           href={task.resultURI}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-primary hover:underline break-all"
+                          className="text-sm text-blue-600 hover:underline break-all font-bold"
                         >
                           {task.resultURI}
                         </a>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+                </div>
 
-                  {/* Action buttons */}
-                  <div className="card-actions justify-end mt-4">
-                    {task.state === TaskState.Open && task.creator !== connectedAddress && (
-                      <div className="space-y-2">
-                        <button
-                          className="btn btn-success btn-sm"
-                          onClick={() => handleAcceptTask(task.id)}
-                          disabled={!connectedAddress}
-                        >
-                          <CheckCircleIcon className="h-4 w-4" />
-                          Accept Task
-                        </button>
-                      </div>
-                    )}
+                {/* Action buttons */}
+                <div className="mt-6 space-y-3">
+                  {task.state === TaskState.Open && task.creator !== connectedAddress && (
+                    <button
+                      className="w-full bg-green-500 hover:bg-green-600 text-white font-black text-lg px-6 py-3 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      onClick={() => handleAcceptTask(task.id)}
+                      disabled={!connectedAddress}
+                    >
+                      <CheckCircleIcon className="h-5 w-5 mr-2 inline" />
+                      ACCEPT TASK
+                    </button>
+                  )}
 
-                    {task.state === TaskState.InProgress && task.worker === connectedAddress && (
-                      <button
-                        className="btn btn-warning btn-sm"
-                        onClick={() => setSelectedTask(task)}
-                        disabled={!connectedAddress}
-                      >
-                        <DocumentTextIcon className="h-4 w-4" />
-                        Submit Result
-                      </button>
-                    )}
+                  {task.state === TaskState.InProgress && task.worker === connectedAddress && (
+                    <button
+                      className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-black text-lg px-6 py-3 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      onClick={() => setSelectedTask(task)}
+                      disabled={!connectedAddress}
+                    >
+                      <DocumentTextIcon className="h-5 w-5 mr-2 inline" />
+                      SUBMIT RESULT
+                    </button>
+                  )}
 
-                    {task.state === TaskState.Completed && task.creator === connectedAddress && (
-                      <button
-                        className="btn btn-primary btn-sm"
-                        onClick={() => handleApproveTask(task.id)}
-                        disabled={!connectedAddress}
-                      >
-                        <CheckCircleIcon className="h-4 w-4" />
-                        Approve & Pay
-                      </button>
-                    )}
-                  </div>
+                  {task.state === TaskState.Completed && task.creator === connectedAddress && (
+                    <button
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-black text-lg px-6 py-3 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      onClick={() => handleApproveTask(task.id)}
+                      disabled={!connectedAddress}
+                    >
+                      <CheckCircleIcon className="h-5 w-5 mr-2 inline" />
+                      APPROVE & PAY
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -441,25 +403,27 @@ const Home: NextPage = () => {
           {/* Submit result modal */}
           {selectedTask && (
             <div className="modal modal-open">
-              <div className="modal-box">
-                <h3 className="font-bold text-lg mb-4">Submit Task Result</h3>
+              <div className="modal-box bg-white border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transform rotate-1">
+                <h3 className="font-black text-2xl mb-6 text-black">SUBMIT TASK RESULT</h3>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Result Link (Image URL)</span>
+                    <span className="label-text font-bold text-lg">RESULT LINK (IMAGE URL)</span>
                   </label>
-                  <InputBase
-                    placeholder="e.g., https://cataas.com/cat/says/Your%20Result"
-                    value={resultURI}
-                    onChange={setResultURI}
-                  />
+                  <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0">
+                    <InputBase
+                      placeholder="e.g., https://cataas.com/cat/says/Your%20Result"
+                      value={resultURI}
+                      onChange={setResultURI}
+                    />
+                  </div>
                   <label className="label">
-                    <span className="label-text-alt">
-                      Tip: You can visit{" "}
+                    <span className="label-text-alt font-bold">
+                      TIP: You can visit{" "}
                       <a
                         href="https://cataas.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="link link-primary"
+                        className="link link-primary font-bold"
                       >
                         cataas.com
                       </a>{" "}
@@ -467,16 +431,19 @@ const Home: NextPage = () => {
                     </span>
                   </label>
                 </div>
-                <div className="modal-action">
-                  <button className="btn btn-ghost" onClick={() => setSelectedTask(null)}>
-                    Cancel
+                <div className="modal-action space-x-4">
+                  <button
+                    className="bg-gray-400 hover:bg-gray-500 text-black font-black px-6 py-3 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all"
+                    onClick={() => setSelectedTask(null)}
+                  >
+                    CANCEL
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-black px-6 py-3 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     onClick={() => handleSubmitResult(selectedTask.id)}
                     disabled={!resultURI}
                   >
-                    Submit Result
+                    SUBMIT RESULT
                   </button>
                 </div>
               </div>
@@ -485,24 +452,28 @@ const Home: NextPage = () => {
 
           {/* Empty state */}
           {tasks.length === 0 && (
-            <div className="text-center py-12">
-              <PhotoIcon className="h-24 w-24 text-base-content/30 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Tasks Available</h3>
-              <p className="text-base-content/70">Be the first to publish a task!</p>
+            <div className="text-center py-16">
+              <div className="bg-white border-8 border-black p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform rotate-2 inline-block">
+                <PhotoIcon className="h-32 w-32 text-gray-400 mx-auto mb-6" />
+                <h3 className="text-3xl font-black text-black mb-4">NO TASKS AVAILABLE</h3>
+                <p className="text-xl font-bold text-gray-600">Be the first to publish a task!</p>
+              </div>
             </div>
           )}
 
           {/* Contract information */}
-          <div className="bg-base-100 p-6 rounded-lg mt-8 shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">🔗 Contract Information</h2>
-            <div className="space-y-2">
-              <p>
-                <strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5
-              </p>
+          <div className="bg-white border-8 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform -rotate-1">
+            <h2 className="text-3xl font-black text-black mb-6">🔗 CONTRACT INFORMATION</h2>
+            <div className="space-y-4">
+              <div className="bg-gray-100 border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <p className="font-bold text-lg">
+                  <strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5
+                </p>
+              </div>
             </div>
-            <div className="mt-4 p-4 bg-base-200 rounded-lg">
-              <h3 className="font-semibold mb-2">💡 Simplified Advantages</h3>
-              <ul className="text-sm space-y-1">
+            <div className="mt-6 bg-yellow-100 border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <h3 className="font-black text-xl mb-4 text-black">💡 SIMPLIFIED ADVANTAGES</h3>
+              <ul className="text-lg font-bold space-y-2">
                 <li>• Direct use of native MON token, no MockUSDC needed</li>
                 <li>• Send MON directly when creating tasks, no approval step required</li>
                 <li>• Simpler frontend integration and user experience</li>
