@@ -246,7 +246,7 @@ const Home: NextPage = () => {
             <div className="flex items-end gap-6">
               <div className="flex-1">
                 <label className="block text-lg font-bold text-black mb-3">TASK DESCRIPTION (PROMPT)</label>
-                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0">
+                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0 [&>div>input]:text-lg [&>div>input]:font-bold [&>div>input]:placeholder:text-lg [&>div>input]:placeholder:font-bold">
                   <InputBase
                     placeholder="e.g., Generate a futuristic city nightscape image"
                     value={newTaskPrompt}
@@ -256,7 +256,7 @@ const Home: NextPage = () => {
               </div>
               <div className="flex-1">
                 <label className="block text-lg font-bold text-black mb-3">REWARD AMOUNT (MON)</label>
-                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0 [&>div>button]:bg-transparent [&>div>button]:border-0 [&>div>button]:hover:bg-transparent">
+                <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0 [&>div>input]:text-lg [&>div>input]:font-bold [&>div>input]:placeholder:text-lg [&>div>input]:placeholder:font-bold [&>div>button]:bg-transparent [&>div>button]:border-0 [&>div>button]:hover:bg-transparent [&>div>span]:text-lg [&>div>span]:font-bold">
                   <EtherInput placeholder="0.1" value={newTaskReward} onChange={setNewTaskReward} />
                 </div>
               </div>
@@ -409,7 +409,7 @@ const Home: NextPage = () => {
                   <label className="label">
                     <span className="label-text font-bold text-lg">RESULT LINK (IMAGE URL)</span>
                   </label>
-                  <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0">
+                  <div className="border-4 border-black bg-gray-100 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] [&>div]:border-0 [&>div]:bg-transparent [&>div]:rounded-none [&>div>input]:border-0 [&>div>input]:bg-transparent [&>div>input]:rounded-none [&>div>input]:focus:outline-none [&>div>input]:focus:ring-0 [&>div>input]:text-lg [&>div>input]:font-bold [&>div>input]:placeholder:text-lg [&>div>input]:placeholder:font-bold">
                     <InputBase
                       placeholder="e.g., https://cataas.com/cat/says/Your%20Result"
                       value={resultURI}
