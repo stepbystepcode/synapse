@@ -1,0 +1,1011 @@
+{
+  "address": "0x6915716d240c64315960688E3Ef05ec07D8E6Db5",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidPrompt",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidReward",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotTaskCreator",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotTaskWorker",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TaskNotCompleted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TaskNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TaskNotInProgress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TaskNotOpen",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "worker",
+          "type": "address"
+        }
+      ],
+      "name": "TaskAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "worker",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        }
+      ],
+      "name": "TaskApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "worker",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "resultURI",
+          "type": "string"
+        }
+      ],
+      "name": "TaskCompleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "prompt",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        }
+      ],
+      "name": "TaskCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "acceptTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approveTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "canAcceptTask",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "canApproveTask",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "canCompleteTask",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_resultURI",
+          "type": "string"
+        }
+      ],
+      "name": "completeTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_prompt",
+          "type": "string"
+        }
+      ],
+      "name": "createTask",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "creatorTasks",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "emergencyWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_count",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAllTasks",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "prompt",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "worker",
+              "type": "address"
+            },
+            {
+              "internalType": "enum AgentTaskManagerSimple.TaskState",
+              "name": "state",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "resultURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "completedAt",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct AgentTaskManagerSimple.Task[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTask",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "prompt",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "worker",
+              "type": "address"
+            },
+            {
+              "internalType": "enum AgentTaskManagerSimple.TaskState",
+              "name": "state",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "resultURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "completedAt",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct AgentTaskManagerSimple.Task",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTaskCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "getTasksByCreator",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_worker",
+          "type": "address"
+        }
+      ],
+      "name": "getTasksByWorker",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "isTaskCreator",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "isTaskWorker",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tasks",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "prompt",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "worker",
+          "type": "address"
+        },
+        {
+          "internalType": "enum AgentTaskManagerSimple.TaskState",
+          "name": "state",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "resultURI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "completedAt",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "workerTasks",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x7e10ec80043ea2f77fe42428bb6e40c92ff1421a562516395beeb0d1acd729b3",
+  "receipt": {
+    "to": null,
+    "from": "0x09DdD58c285cfB8871f729042d0bb22Db9Ad41c8",
+    "contractAddress": "0x6915716d240c64315960688E3Ef05ec07D8E6Db5",
+    "transactionIndex": 6,
+    "gasUsed": "1650202",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000024000000000000000000800000001000000000000000400000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000040000000000000000020000000000000000000000000000000000000000000002000000000000000000000",
+    "blockHash": "0x32fa881e015fc5439d38a475c64c229e572ae9993961f586a71e405af6bf3fef",
+    "transactionHash": "0x7e10ec80043ea2f77fe42428bb6e40c92ff1421a562516395beeb0d1acd729b3",
+    "logs": [
+      {
+        "transactionIndex": 6,
+        "blockNumber": 31075247,
+        "transactionHash": "0x7e10ec80043ea2f77fe42428bb6e40c92ff1421a562516395beeb0d1acd729b3",
+        "address": "0x6915716d240c64315960688E3Ef05ec07D8E6Db5",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x00000000000000000000000009ddd58c285cfb8871f729042d0bb22db9ad41c8"
+        ],
+        "data": "0x",
+        "logIndex": 10,
+        "blockHash": "0x32fa881e015fc5439d38a475c64c229e572ae9993961f586a71e405af6bf3fef"
+      }
+    ],
+    "blockNumber": 31075247,
+    "cumulativeGasUsed": "2269283",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "3ad31d27ded37c18a49aad520fb5373b",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"InvalidPrompt\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidReward\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotTaskCreator\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotTaskWorker\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TaskNotCompleted\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TaskNotFound\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TaskNotInProgress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TaskNotOpen\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TransferFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"}],\"name\":\"TaskAccepted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"}],\"name\":\"TaskApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"resultURI\",\"type\":\"string\"}],\"name\":\"TaskCompleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"prompt\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"}],\"name\":\"TaskCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"}],\"name\":\"acceptTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"}],\"name\":\"approveTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"canAcceptTask\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"canApproveTask\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"canCompleteTask\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_resultURI\",\"type\":\"string\"}],\"name\":\"completeTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_prompt\",\"type\":\"string\"}],\"name\":\"createTask\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"creatorTasks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"emergencyWithdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_count\",\"type\":\"uint256\"}],\"name\":\"getAllTasks\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"prompt\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"},{\"internalType\":\"enum AgentTaskManagerSimple.TaskState\",\"name\":\"state\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"resultURI\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"}],\"internalType\":\"struct AgentTaskManagerSimple.Task[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"}],\"name\":\"getTask\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"prompt\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"},{\"internalType\":\"enum AgentTaskManagerSimple.TaskState\",\"name\":\"state\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"resultURI\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"}],\"internalType\":\"struct AgentTaskManagerSimple.Task\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTaskCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_creator\",\"type\":\"address\"}],\"name\":\"getTasksByCreator\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_worker\",\"type\":\"address\"}],\"name\":\"getTasksByWorker\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"isTaskCreator\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"isTaskWorker\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tasks\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"prompt\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"worker\",\"type\":\"address\"},{\"internalType\":\"enum AgentTaskManagerSimple.TaskState\",\"name\":\"state\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"resultURI\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"workerTasks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"\\u7b80\\u5316\\u7248AI\\u4ee3\\u7406\\u4efb\\u52a1\\u7ba1\\u7406\\u5668\\uff0c\\u76f4\\u63a5\\u4f7f\\u7528\\u539f\\u751fMON\\u4ee3\\u5e01\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}]},\"kind\":\"dev\",\"methods\":{\"acceptTask(uint256)\":{\"details\":\"\\u63a5\\u53d7\\u4efb\\u52a1\",\"params\":{\"_taskId\":\"\\u4efb\\u52a1ID\"}},\"approveTask(uint256)\":{\"details\":\"\\u5ba1\\u6838\\u5e76\\u652f\\u4ed8\\u4efb\\u52a1\",\"params\":{\"_taskId\":\"\\u4efb\\u52a1ID\"}},\"canAcceptTask(uint256,address)\":{\"details\":\"\\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u63a5\\u53d7\\u4efb\\u52a1\"},\"canApproveTask(uint256,address)\":{\"details\":\"\\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u5ba1\\u6838\\u4efb\\u52a1\"},\"canCompleteTask(uint256,address)\":{\"details\":\"\\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u5b8c\\u6210\\u4efb\\u52a1\"},\"completeTask(uint256,string)\":{\"details\":\"\\u5b8c\\u6210\\u4efb\\u52a1\",\"params\":{\"_resultURI\":\"\\u7ed3\\u679cURI\",\"_taskId\":\"\\u4efb\\u52a1ID\"}},\"createTask(string)\":{\"details\":\"\\u521b\\u5efa\\u4efb\\u52a1\",\"params\":{\"_prompt\":\"\\u4efb\\u52a1\\u63d0\\u793a\\u8bcd\"}},\"emergencyWithdraw()\":{\"details\":\"\\u7d27\\u6025\\u63d0\\u53d6\\uff08\\u4ec5\\u5408\\u7ea6\\u6240\\u6709\\u8005\\uff09\"},\"getAllTasks(uint256,uint256)\":{\"details\":\"\\u83b7\\u53d6\\u6240\\u6709\\u4efb\\u52a1\",\"params\":{\"_count\":\"\\u6570\\u91cf\",\"_start\":\"\\u5f00\\u59cb\\u7d22\\u5f15\"}},\"getTask(uint256)\":{\"details\":\"\\u83b7\\u53d6\\u4efb\\u52a1\\u4fe1\\u606f\",\"params\":{\"_taskId\":\"\\u4efb\\u52a1ID\"}},\"getTaskCount()\":{\"details\":\"\\u83b7\\u53d6\\u4efb\\u52a1\\u603b\\u6570\"},\"getTasksByCreator(address)\":{\"details\":\"\\u83b7\\u53d6\\u521b\\u5efa\\u8005\\u7684\\u4efb\\u52a1\\u5217\\u8868\",\"params\":{\"_creator\":\"\\u521b\\u5efa\\u8005\\u5730\\u5740\"}},\"getTasksByWorker(address)\":{\"details\":\"\\u83b7\\u53d6\\u5de5\\u4f5c\\u8005\\u7684\\u4efb\\u52a1\\u5217\\u8868\",\"params\":{\"_worker\":\"\\u5de5\\u4f5c\\u8005\\u5730\\u5740\"}},\"isTaskCreator(uint256,address)\":{\"details\":\"\\u68c0\\u67e5\\u662f\\u5426\\u4e3a\\u4efb\\u52a1\\u521b\\u5efa\\u8005\"},\"isTaskWorker(uint256,address)\":{\"details\":\"\\u68c0\\u67e5\\u662f\\u5426\\u4e3a\\u4efb\\u52a1\\u5de5\\u4f5c\\u8005\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"AgentTaskManagerSimple\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/AgentTaskManagerSimple.sol\":\"AgentTaskManagerSimple\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.1.0) (utils/ReentrancyGuard.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Contract module that helps prevent reentrant calls to a function.\\n *\\n * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier\\n * available, which can be applied to functions to make sure there are no nested\\n * (reentrant) calls to them.\\n *\\n * Note that because there is a single `nonReentrant` guard, functions marked as\\n * `nonReentrant` may not call one another. This can be worked around by making\\n * those functions `private`, and then adding `external` `nonReentrant` entry\\n * points to them.\\n *\\n * TIP: If EIP-1153 (transient storage) is available on the chain you're deploying at,\\n * consider using {ReentrancyGuardTransient} instead.\\n *\\n * TIP: If you would like to learn more about reentrancy and alternative ways\\n * to protect against it, check out our blog post\\n * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].\\n */\\nabstract contract ReentrancyGuard {\\n    // Booleans are more expensive than uint256 or any type that takes up a full\\n    // word because each write operation emits an extra SLOAD to first read the\\n    // slot's contents, replace the bits taken up by the boolean, and then write\\n    // back. This is the compiler's defense against contract upgrades and\\n    // pointer aliasing, and it cannot be disabled.\\n\\n    // The values being non-zero value makes deployment a bit more expensive,\\n    // but in exchange the refund on every call to nonReentrant will be lower in\\n    // amount. Since refunds are capped to a percentage of the total\\n    // transaction's gas, it is best to keep them low in cases like this one, to\\n    // increase the likelihood of the full refund coming into effect.\\n    uint256 private constant NOT_ENTERED = 1;\\n    uint256 private constant ENTERED = 2;\\n\\n    uint256 private _status;\\n\\n    /**\\n     * @dev Unauthorized reentrant call.\\n     */\\n    error ReentrancyGuardReentrantCall();\\n\\n    constructor() {\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Prevents a contract from calling itself, directly or indirectly.\\n     * Calling a `nonReentrant` function from another `nonReentrant`\\n     * function is not supported. It is possible to prevent this from happening\\n     * by making the `nonReentrant` function external, and making it call a\\n     * `private` function that does the actual work.\\n     */\\n    modifier nonReentrant() {\\n        _nonReentrantBefore();\\n        _;\\n        _nonReentrantAfter();\\n    }\\n\\n    function _nonReentrantBefore() private {\\n        // On the first call to nonReentrant, _status will be NOT_ENTERED\\n        if (_status == ENTERED) {\\n            revert ReentrancyGuardReentrantCall();\\n        }\\n\\n        // Any calls to nonReentrant after this point will fail\\n        _status = ENTERED;\\n    }\\n\\n    function _nonReentrantAfter() private {\\n        // By storing the original value once again, a refund is triggered (see\\n        // https://eips.ethereum.org/EIPS/eip-2200)\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Returns true if the reentrancy guard is currently set to \\\"entered\\\", which indicates there is a\\n     * `nonReentrant` function in the call stack.\\n     */\\n    function _reentrancyGuardEntered() internal view returns (bool) {\\n        return _status == ENTERED;\\n    }\\n}\\n\",\"keccak256\":\"0x11a5a79827df29e915a12740caf62fe21ebe27c08c9ae3e09abe9ee3ba3866d3\",\"license\":\"MIT\"},\"contracts/AgentTaskManagerSimple.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity >=0.8.0 <0.9.0;\\n\\nimport \\\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\\\";\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title AgentTaskManagerSimple\\n * @dev \\u7b80\\u5316\\u7248AI\\u4ee3\\u7406\\u4efb\\u52a1\\u7ba1\\u7406\\u5668\\uff0c\\u76f4\\u63a5\\u4f7f\\u7528\\u539f\\u751fMON\\u4ee3\\u5e01\\n */\\ncontract AgentTaskManagerSimple is ReentrancyGuard, Ownable {\\n    enum TaskState { Open, InProgress, Completed, Approved }\\n    \\n    struct Task {\\n        string prompt;\\n        uint256 reward;\\n        address creator;\\n        address worker;\\n        TaskState state;\\n        string resultURI;\\n        uint256 createdAt;\\n        uint256 completedAt;\\n    }\\n    \\n    Task[] public tasks;\\n    mapping(address => uint256[]) public creatorTasks;\\n    mapping(address => uint256[]) public workerTasks;\\n    \\n    // \\u4e8b\\u4ef6\\n    event TaskCreated(uint256 indexed taskId, address indexed creator, string prompt, uint256 reward);\\n    event TaskAccepted(uint256 indexed taskId, address indexed worker);\\n    event TaskCompleted(uint256 indexed taskId, address indexed worker, string resultURI);\\n    event TaskApproved(uint256 indexed taskId, address indexed creator, address indexed worker, uint256 reward);\\n    \\n    // \\u9519\\u8bef\\n    error InvalidPrompt();\\n    error InvalidReward();\\n    error TaskNotFound();\\n    error TaskNotOpen();\\n    error TaskNotInProgress();\\n    error TaskNotCompleted();\\n    error NotTaskCreator();\\n    error NotTaskWorker();\\n    error TransferFailed();\\n    \\n    constructor() Ownable(msg.sender) {}\\n    \\n    /**\\n     * @dev \\u521b\\u5efa\\u4efb\\u52a1\\n     * @param _prompt \\u4efb\\u52a1\\u63d0\\u793a\\u8bcd\\n     */\\n    function createTask(string memory _prompt) external payable nonReentrant {\\n        if (bytes(_prompt).length == 0) revert InvalidPrompt();\\n        if (msg.value == 0) revert InvalidReward();\\n        \\n        uint256 taskId = tasks.length;\\n        tasks.push(Task({\\n            prompt: _prompt,\\n            reward: msg.value,\\n            creator: msg.sender,\\n            worker: address(0),\\n            state: TaskState.Open,\\n            resultURI: \\\"\\\",\\n            createdAt: block.timestamp,\\n            completedAt: 0\\n        }));\\n        \\n        creatorTasks[msg.sender].push(taskId);\\n        \\n        emit TaskCreated(taskId, msg.sender, _prompt, msg.value);\\n    }\\n    \\n    /**\\n     * @dev \\u63a5\\u53d7\\u4efb\\u52a1\\n     * @param _taskId \\u4efb\\u52a1ID\\n     */\\n    function acceptTask(uint256 _taskId) external nonReentrant {\\n        if (_taskId >= tasks.length) revert TaskNotFound();\\n        \\n        Task storage task = tasks[_taskId];\\n        if (task.state != TaskState.Open) revert TaskNotOpen();\\n        if (task.creator == msg.sender) revert TaskNotOpen(); // \\u521b\\u5efa\\u8005\\u4e0d\\u80fd\\u63a5\\u53d7\\u81ea\\u5df1\\u7684\\u4efb\\u52a1\\n        \\n        task.worker = msg.sender;\\n        task.state = TaskState.InProgress;\\n        workerTasks[msg.sender].push(_taskId);\\n        \\n        emit TaskAccepted(_taskId, msg.sender);\\n    }\\n    \\n    /**\\n     * @dev \\u5b8c\\u6210\\u4efb\\u52a1\\n     * @param _taskId \\u4efb\\u52a1ID\\n     * @param _resultURI \\u7ed3\\u679cURI\\n     */\\n    function completeTask(uint256 _taskId, string memory _resultURI) external nonReentrant {\\n        if (_taskId >= tasks.length) revert TaskNotFound();\\n        \\n        Task storage task = tasks[_taskId];\\n        if (task.worker != msg.sender) revert NotTaskWorker();\\n        if (task.state != TaskState.InProgress) revert TaskNotInProgress();\\n        \\n        task.resultURI = _resultURI;\\n        task.state = TaskState.Completed;\\n        task.completedAt = block.timestamp;\\n        \\n        emit TaskCompleted(_taskId, msg.sender, _resultURI);\\n    }\\n    \\n    /**\\n     * @dev \\u5ba1\\u6838\\u5e76\\u652f\\u4ed8\\u4efb\\u52a1\\n     * @param _taskId \\u4efb\\u52a1ID\\n     */\\n    function approveTask(uint256 _taskId) external nonReentrant {\\n        if (_taskId >= tasks.length) revert TaskNotFound();\\n        \\n        Task storage task = tasks[_taskId];\\n        if (task.creator != msg.sender) revert NotTaskCreator();\\n        if (task.state != TaskState.Completed) revert TaskNotCompleted();\\n        \\n        task.state = TaskState.Approved;\\n        \\n        // \\u8f6c\\u8d26\\u7ed9\\u5de5\\u4f5c\\u8005\\n        (bool success, ) = task.worker.call{value: task.reward}(\\\"\\\");\\n        if (!success) revert TransferFailed();\\n        \\n        emit TaskApproved(_taskId, msg.sender, task.worker, task.reward);\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u4efb\\u52a1\\u4fe1\\u606f\\n     * @param _taskId \\u4efb\\u52a1ID\\n     */\\n    function getTask(uint256 _taskId) external view returns (Task memory) {\\n        if (_taskId >= tasks.length) revert TaskNotFound();\\n        return tasks[_taskId];\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u4efb\\u52a1\\u603b\\u6570\\n     */\\n    function getTaskCount() external view returns (uint256) {\\n        return tasks.length;\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u521b\\u5efa\\u8005\\u7684\\u4efb\\u52a1\\u5217\\u8868\\n     * @param _creator \\u521b\\u5efa\\u8005\\u5730\\u5740\\n     */\\n    function getTasksByCreator(address _creator) external view returns (uint256[] memory) {\\n        return creatorTasks[_creator];\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u5de5\\u4f5c\\u8005\\u7684\\u4efb\\u52a1\\u5217\\u8868\\n     * @param _worker \\u5de5\\u4f5c\\u8005\\u5730\\u5740\\n     */\\n    function getTasksByWorker(address _worker) external view returns (uint256[] memory) {\\n        return workerTasks[_worker];\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u6240\\u6709\\u4efb\\u52a1\\n     * @param _start \\u5f00\\u59cb\\u7d22\\u5f15\\n     * @param _count \\u6570\\u91cf\\n     */\\n    function getAllTasks(uint256 _start, uint256 _count) external view returns (Task[] memory) {\\n        uint256 end = _start + _count;\\n        if (end > tasks.length) {\\n            end = tasks.length;\\n        }\\n        if (_start >= tasks.length) {\\n            return new Task[](0);\\n        }\\n        \\n        Task[] memory result = new Task[](end - _start);\\n        for (uint256 i = _start; i < end; i++) {\\n            result[i - _start] = tasks[i];\\n        }\\n        return result;\\n    }\\n    \\n    /**\\n     * @dev \\u68c0\\u67e5\\u662f\\u5426\\u4e3a\\u4efb\\u52a1\\u521b\\u5efa\\u8005\\n     */\\n    function isTaskCreator(uint256 _taskId, address _user) external view returns (bool) {\\n        if (_taskId >= tasks.length) return false;\\n        return tasks[_taskId].creator == _user;\\n    }\\n    \\n    /**\\n     * @dev \\u68c0\\u67e5\\u662f\\u5426\\u4e3a\\u4efb\\u52a1\\u5de5\\u4f5c\\u8005\\n     */\\n    function isTaskWorker(uint256 _taskId, address _user) external view returns (bool) {\\n        if (_taskId >= tasks.length) return false;\\n        return tasks[_taskId].worker == _user;\\n    }\\n    \\n    /**\\n     * @dev \\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u63a5\\u53d7\\u4efb\\u52a1\\n     */\\n    function canAcceptTask(uint256 _taskId, address _user) external view returns (bool) {\\n        if (_taskId >= tasks.length) return false;\\n        Task storage task = tasks[_taskId];\\n        return task.state == TaskState.Open && task.creator != _user;\\n    }\\n    \\n    /**\\n     * @dev \\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u5b8c\\u6210\\u4efb\\u52a1\\n     */\\n    function canCompleteTask(uint256 _taskId, address _user) external view returns (bool) {\\n        if (_taskId >= tasks.length) return false;\\n        Task storage task = tasks[_taskId];\\n        return task.state == TaskState.InProgress && task.worker == _user;\\n    }\\n    \\n    /**\\n     * @dev \\u68c0\\u67e5\\u662f\\u5426\\u53ef\\u4ee5\\u5ba1\\u6838\\u4efb\\u52a1\\n     */\\n    function canApproveTask(uint256 _taskId, address _user) external view returns (bool) {\\n        if (_taskId >= tasks.length) return false;\\n        Task storage task = tasks[_taskId];\\n        return task.state == TaskState.Completed && task.creator == _user;\\n    }\\n    \\n    /**\\n     * @dev \\u7d27\\u6025\\u63d0\\u53d6\\uff08\\u4ec5\\u5408\\u7ea6\\u6240\\u6709\\u8005\\uff09\\n     */\\n    function emergencyWithdraw() external onlyOwner {\\n        (bool success, ) = owner().call{value: address(this).balance}(\\\"\\\");\\n        if (!success) revert TransferFailed();\\n    }\\n    \\n    /**\\n     * @dev \\u63a5\\u6536ETH\\n     */\\n    receive() external payable {}\\n}\\n\",\"keccak256\":\"0x0d00c1b6f91ef530f29092cc435963d75a34f7299f98a4588525d9cdba36b5bc\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506001600055338061003c57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100458161004b565b5061009d565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b611bc2806100ac6000396000f3fe60806040526004361061012e5760003560e01c8063715018a6116100ab57806392b9bd381161006f57806392b9bd381461036e578063c17a340e1461038e578063d9a391dd146103a3578063db2e21bc146103c3578063ecb8dc41146103d8578063f2fde38b146103f857600080fd5b8063715018a6146102bd57806374aaa760146102d257806380a92a97146102f25780638d977672146103125780638da5cb5b1461034657600080fd5b80632bf70dee116100f25780632bf70dee146101f5578063306d66d01461022357806331a401311461024357806346cc01da1461027057806370337a781461029d57600080fd5b80630a07fae61461013a578063111002aa1461015c5780631bf6912d1461016f5780631d65e77e1461018f5780632bda47c0146101c557600080fd5b3661013557005b600080fd5b34801561014657600080fd5b5061015a610155366004611583565b610418565b005b61015a61016a36600461163f565b6105c0565b34801561017b57600080fd5b5061015a61018a366004611583565b6107a9565b34801561019b57600080fd5b506101af6101aa366004611583565b6108e2565b6040516101bc9190611782565b60405180910390f35b3480156101d157600080fd5b506101e56101e03660046117b8565b610ada565b60405190151581526020016101bc565b34801561020157600080fd5b506102156102103660046117e4565b610b32565b6040519081526020016101bc565b34801561022f57600080fd5b506101e561023e3660046117b8565b610b63565b34801561024f57600080fd5b5061026361025e36600461180e565b610bb9565b6040516101bc9190611829565b34801561027c57600080fd5b5061029061028b36600461186d565b610c25565b6040516101bc919061188f565b3480156102a957600080fd5b506102636102b836600461180e565b610efc565b3480156102c957600080fd5b5061015a610f66565b3480156102de57600080fd5b5061015a6102ed3660046118f1565b610f7a565b3480156102fe57600080fd5b506101e561030d3660046117b8565b6110af565b34801561031e57600080fd5b5061033261032d366004611583565b611130565b6040516101bc989796959493929190611938565b34801561035257600080fd5b506001546040516001600160a01b0390911681526020016101bc565b34801561037a57600080fd5b506101e56103893660046117b8565b6112ae565b34801561039a57600080fd5b50600254610215565b3480156103af57600080fd5b506102156103be3660046117e4565b61132e565b3480156103cf57600080fd5b5061015a61134a565b3480156103e457600080fd5b506101e56103f33660046117b8565b6113d7565b34801561040457600080fd5b5061015a61041336600461180e565b611455565b610420611495565b60025481106104425760405163c325ae3360e01b815260040160405180910390fd5b600060028281548110610457576104576119a3565b600091825260209091206002600790920201908101549091506001600160a01b031633146104985760405163eabf778760e01b815260040160405180910390fd5b6002600382810154600160a01b900460ff16908111156104ba576104ba6116ba565b146104d8576040516316da98a560e01b815260040160405180910390fd5b600381018054600360a01b60ff60a01b1982161790915560018201546040516000926001600160a01b031691908381818185875af1925050503d806000811461053d576040519150601f19603f3d011682016040523d82523d6000602084013e610542565b606091505b5050905080610564576040516312171d8360e31b815260040160405180910390fd5b600382015460018301546040519081526001600160a01b0390911690339085907f320126ac0f44cc9ce9091ce7ce92023490feb9848de4b892369ef95c209655339060200160405180910390a450506105bd6001600055565b50565b6105c8611495565b80516000036105ea576040516345df16e360e11b815260040160405180910390fd5b3460000361060b576040516314414f4160e11b815260040160405180910390fd5b60028054604080516101008101825284815234602080830191909152338284015260006060830181905260808301819052835191820190935282815260a08201524260c082015260e081018290526001830184559290528151909190600783027f405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ace0190819061069a9082611a42565b506020820151600182015560408201516002820180546001600160a01b03199081166001600160a01b0393841617909155606084015160038085018054938416929094169182178455608086015193926001600160a81b03191690911790600160a01b90849081111561070f5761070f6116ba565b021790555060a082015160048201906107289082611a42565b5060c0820151600582015560e090910151600690910155336000818152600360209081526040808320805460018101825590845291909220018390555182907f9e3c9757475c00b86393e183b68033bb76e48fa164849c7428ad17f62e1954a7906107969086903490611b02565b60405180910390a3506105bd6001600055565b6107b1611495565b60025481106107d35760405163c325ae3360e01b815260040160405180910390fd5b6000600282815481106107e8576107e86119a3565b6000918252602082206007909102019150600382810154600160a01b900460ff1690811115610819576108196116ba565b146108375760405163fe89421760e01b815260040160405180910390fd5b6002810154336001600160a01b03909116036108665760405163fe89421760e01b815260040160405180910390fd5b6003810180546001600160a81b0319163360ff60a01b19811691909117600160a01b17909155600081815260046020908152604080832080546001810182559084529183209091018590555184917fc8717b61398fb9d7cacf49fe1e296b2f10e9711226b532842b6ffd642cb6a2c691a3506105bd6001600055565b6108ea61153e565b600254821061090c5760405163c325ae3360e01b815260040160405180910390fd5b6002828154811061091f5761091f6119a3565b906000526020600020906007020160405180610100016040529081600082018054610949906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610975906119b9565b80156109c25780601f10610997576101008083540402835291602001916109c2565b820191906000526020600020905b8154815290600101906020018083116109a557829003601f168201915b50505091835250506001820154602082015260028201546001600160a01b0390811660408301526003808401549182166060840152608090920191600160a01b90910460ff1690811115610a1857610a186116ba565b6003811115610a2957610a296116ba565b8152602001600482018054610a3d906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610a69906119b9565b8015610ab65780601f10610a8b57610100808354040283529160200191610ab6565b820191906000526020600020905b815481529060010190602001808311610a9957829003601f168201915b50505050508152602001600582015481526020016006820154815250509050919050565b6002546000908310610aee57506000610b2c565b816001600160a01b031660028481548110610b0b57610b0b6119a3565b60009182526020909120600260079092020101546001600160a01b03161490505b92915050565b60046020528160005260406000208181548110610b4e57600080fd5b90600052602060002001600091509150505481565b6002546000908310610b7757506000610b2c565b816001600160a01b031660028481548110610b9457610b946119a3565b60009182526020909120600790910201600301546001600160a01b0316149392505050565b6001600160a01b038116600090815260036020908152604091829020805483518184028101840190945280845260609392830182828015610c1957602002820191906000526020600020905b815481526020019060010190808311610c05575b50505050509050919050565b60606000610c338385611b3a565b600254909150811115610c4557506002545b6002548410610c88576040805160008082526020820190925290610c7f565b610c6c61153e565b815260200190600190039081610c645790505b50915050610b2c565b6000610c948583611b4d565b67ffffffffffffffff811115610cac57610cac61159c565b604051908082528060200260200182016040528015610ce557816020015b610cd261153e565b815260200190600190039081610cca5790505b509050845b82811015610ef35760028181548110610d0557610d056119a3565b906000526020600020906007020160405180610100016040529081600082018054610d2f906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610d5b906119b9565b8015610da85780601f10610d7d57610100808354040283529160200191610da8565b820191906000526020600020905b815481529060010190602001808311610d8b57829003601f168201915b50505091835250506001820154602082015260028201546001600160a01b0390811660408301526003808401549182166060840152608090920191600160a01b90910460ff1690811115610dfe57610dfe6116ba565b6003811115610e0f57610e0f6116ba565b8152602001600482018054610e23906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610e4f906119b9565b8015610e9c5780601f10610e7157610100808354040283529160200191610e9c565b820191906000526020600020905b815481529060010190602001808311610e7f57829003601f168201915b50505091835250506005820154602082015260069091015460409091015282610ec58884611b4d565b81518110610ed557610ed56119a3565b60200260200101819052508080610eeb90611b60565b915050610cea565b50949350505050565b6001600160a01b038116600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015610c195760200282019190600052602060002090815481526020019060010190808311610c055750505050509050919050565b610f6e6114bf565b610f7860006114ec565b565b610f82611495565b6002548210610fa45760405163c325ae3360e01b815260040160405180910390fd5b600060028381548110610fb957610fb96119a3565b600091825260209091206003600790920201908101549091506001600160a01b03163314610ffa57604051630d04a16d60e11b815260040160405180910390fd5b6001600382810154600160a01b900460ff169081111561101c5761101c6116ba565b1461103a5760405163109d83db60e11b815260040160405180910390fd5b600481016110488382611a42565b5060038101805460ff60a01b1916600160a11b179055426006820155604051339084907f156ab7cd603565d08601ecdc345fe8e8aa82302e835d4df3bff0ec4f005809ed90611098908690611b79565b60405180910390a3506110ab6001600055565b5050565b60025460009083106110c357506000610b2c565b6000600284815481106110d8576110d86119a3565b6000918252602090912060079091020190506002600382810154600160a01b900460ff169081111561110c5761110c6116ba565b148015611128575060028101546001600160a01b038481169116145b949350505050565b6002818154811061114057600080fd5b9060005260206000209060070201600091509050806000018054611163906119b9565b80601f016020809104026020016040519081016040528092919081815260200182805461118f906119b9565b80156111dc5780601f106111b1576101008083540402835291602001916111dc565b820191906000526020600020905b8154815290600101906020018083116111bf57829003601f168201915b50505050600183015460028401546003850154600486018054959693956001600160a01b03938416955092821693600160a01b90920460ff169261121f906119b9565b80601f016020809104026020016040519081016040528092919081815260200182805461124b906119b9565b80156112985780601f1061126d57610100808354040283529160200191611298565b820191906000526020600020905b81548152906001019060200180831161127b57829003601f168201915b5050505050908060050154908060060154905088565b60025460009083106112c257506000610b2c565b6000600284815481106112d7576112d76119a3565b6000918252602090912060079091020190506001600382810154600160a01b900460ff169081111561130b5761130b6116ba565b1480156111285750600301546001600160a01b0392831692169190911492915050565b60036020528160005260406000208181548110610b4e57600080fd5b6113526114bf565b60006113666001546001600160a01b031690565b6001600160a01b03164760405160006040518083038185875af1925050503d80600081146113b0576040519150601f19603f3d011682016040523d82523d6000602084013e6113b5565b606091505b50509050806105bd576040516312171d8360e31b815260040160405180910390fd5b60025460009083106113eb57506000610b2c565b600060028481548110611400576114006119a3565b6000918252602082206007909102019150600382810154600160a01b900460ff1690811115611431576114316116ba565b1480156111285750600201546001600160a01b039283169216919091141592915050565b61145d6114bf565b6001600160a01b03811661148c57604051631e4fbdf760e01b8152600060048201526024015b60405180910390fd5b6105bd816114ec565b6002600054036114b857604051633ee5aeb560e01b815260040160405180910390fd5b6002600055565b6001546001600160a01b03163314610f785760405163118cdaa760e01b8152336004820152602401611483565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b60408051610100810182526060808252600060208301819052928201839052810182905290608082019081526020016060815260200160008152602001600081525090565b60006020828403121561159557600080fd5b5035919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126115c357600080fd5b813567ffffffffffffffff808211156115de576115de61159c565b604051601f8301601f19908116603f011681019082821181831017156116065761160661159c565b8160405283815286602085880101111561161f57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60006020828403121561165157600080fd5b813567ffffffffffffffff81111561166857600080fd5b611128848285016115b2565b6000815180845260005b8181101561169a5760208185018101518683018201520161167e565b506000602082860101526020601f19601f83011685010191505092915050565b634e487b7160e01b600052602160045260246000fd5b600481106116ee57634e487b7160e01b600052602160045260246000fd5b9052565b6000610100825181855261170882860182611674565b91505060208301516020850152604083015160018060a01b0380821660408701528060608601511660608701525050608083015161174960808601826116d0565b5060a083015184820360a08601526117618282611674565b91505060c083015160c085015260e083015160e08501528091505092915050565b60208152600061179560208301846116f2565b9392505050565b80356001600160a01b03811681146117b357600080fd5b919050565b600080604083850312156117cb57600080fd5b823591506117db6020840161179c565b90509250929050565b600080604083850312156117f757600080fd5b6118008361179c565b946020939093013593505050565b60006020828403121561182057600080fd5b6117958261179c565b6020808252825182820181905260009190848201906040850190845b8181101561186157835183529284019291840191600101611845565b50909695505050505050565b6000806040838503121561188057600080fd5b50508035926020909101359150565b6000602080830181845280855180835260408601915060408160051b870101925083870160005b828110156118e457603f198886030184526118d28583516116f2565b945092850192908501906001016118b6565b5092979650505050505050565b6000806040838503121561190457600080fd5b82359150602083013567ffffffffffffffff81111561192257600080fd5b61192e858286016115b2565b9150509250929050565b600061010080835261194c8184018c611674565b602084018b90526001600160a01b038a8116604086015289166060850152905061197960808401886116d0565b82810360a084015261198b8187611674565b60c0840195909552505060e001529695505050505050565b634e487b7160e01b600052603260045260246000fd5b600181811c908216806119cd57607f821691505b6020821081036119ed57634e487b7160e01b600052602260045260246000fd5b50919050565b601f821115611a3d57600081815260208120601f850160051c81016020861015611a1a5750805b601f850160051c820191505b81811015611a3957828155600101611a26565b5050505b505050565b815167ffffffffffffffff811115611a5c57611a5c61159c565b611a7081611a6a84546119b9565b846119f3565b602080601f831160018114611aa55760008415611a8d5750858301515b600019600386901b1c1916600185901b178555611a39565b600085815260208120601f198616915b82811015611ad457888601518255948401946001909101908401611ab5565b5085821015611af25787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b604081526000611b156040830185611674565b90508260208301529392505050565b634e487b7160e01b600052601160045260246000fd5b80820180821115610b2c57610b2c611b24565b81810381811115610b2c57610b2c611b24565b600060018201611b7257611b72611b24565b5060010190565b602081526000611795602083018461167456fea264697066735822122072e36c3deb81f385834bdd74d2192dfb2e5f675c7bc1dede2aea6276fa05488664736f6c63430008140033",
+  "deployedBytecode": "0x60806040526004361061012e5760003560e01c8063715018a6116100ab57806392b9bd381161006f57806392b9bd381461036e578063c17a340e1461038e578063d9a391dd146103a3578063db2e21bc146103c3578063ecb8dc41146103d8578063f2fde38b146103f857600080fd5b8063715018a6146102bd57806374aaa760146102d257806380a92a97146102f25780638d977672146103125780638da5cb5b1461034657600080fd5b80632bf70dee116100f25780632bf70dee146101f5578063306d66d01461022357806331a401311461024357806346cc01da1461027057806370337a781461029d57600080fd5b80630a07fae61461013a578063111002aa1461015c5780631bf6912d1461016f5780631d65e77e1461018f5780632bda47c0146101c557600080fd5b3661013557005b600080fd5b34801561014657600080fd5b5061015a610155366004611583565b610418565b005b61015a61016a36600461163f565b6105c0565b34801561017b57600080fd5b5061015a61018a366004611583565b6107a9565b34801561019b57600080fd5b506101af6101aa366004611583565b6108e2565b6040516101bc9190611782565b60405180910390f35b3480156101d157600080fd5b506101e56101e03660046117b8565b610ada565b60405190151581526020016101bc565b34801561020157600080fd5b506102156102103660046117e4565b610b32565b6040519081526020016101bc565b34801561022f57600080fd5b506101e561023e3660046117b8565b610b63565b34801561024f57600080fd5b5061026361025e36600461180e565b610bb9565b6040516101bc9190611829565b34801561027c57600080fd5b5061029061028b36600461186d565b610c25565b6040516101bc919061188f565b3480156102a957600080fd5b506102636102b836600461180e565b610efc565b3480156102c957600080fd5b5061015a610f66565b3480156102de57600080fd5b5061015a6102ed3660046118f1565b610f7a565b3480156102fe57600080fd5b506101e561030d3660046117b8565b6110af565b34801561031e57600080fd5b5061033261032d366004611583565b611130565b6040516101bc989796959493929190611938565b34801561035257600080fd5b506001546040516001600160a01b0390911681526020016101bc565b34801561037a57600080fd5b506101e56103893660046117b8565b6112ae565b34801561039a57600080fd5b50600254610215565b3480156103af57600080fd5b506102156103be3660046117e4565b61132e565b3480156103cf57600080fd5b5061015a61134a565b3480156103e457600080fd5b506101e56103f33660046117b8565b6113d7565b34801561040457600080fd5b5061015a61041336600461180e565b611455565b610420611495565b60025481106104425760405163c325ae3360e01b815260040160405180910390fd5b600060028281548110610457576104576119a3565b600091825260209091206002600790920201908101549091506001600160a01b031633146104985760405163eabf778760e01b815260040160405180910390fd5b6002600382810154600160a01b900460ff16908111156104ba576104ba6116ba565b146104d8576040516316da98a560e01b815260040160405180910390fd5b600381018054600360a01b60ff60a01b1982161790915560018201546040516000926001600160a01b031691908381818185875af1925050503d806000811461053d576040519150601f19603f3d011682016040523d82523d6000602084013e610542565b606091505b5050905080610564576040516312171d8360e31b815260040160405180910390fd5b600382015460018301546040519081526001600160a01b0390911690339085907f320126ac0f44cc9ce9091ce7ce92023490feb9848de4b892369ef95c209655339060200160405180910390a450506105bd6001600055565b50565b6105c8611495565b80516000036105ea576040516345df16e360e11b815260040160405180910390fd5b3460000361060b576040516314414f4160e11b815260040160405180910390fd5b60028054604080516101008101825284815234602080830191909152338284015260006060830181905260808301819052835191820190935282815260a08201524260c082015260e081018290526001830184559290528151909190600783027f405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ace0190819061069a9082611a42565b506020820151600182015560408201516002820180546001600160a01b03199081166001600160a01b0393841617909155606084015160038085018054938416929094169182178455608086015193926001600160a81b03191690911790600160a01b90849081111561070f5761070f6116ba565b021790555060a082015160048201906107289082611a42565b5060c0820151600582015560e090910151600690910155336000818152600360209081526040808320805460018101825590845291909220018390555182907f9e3c9757475c00b86393e183b68033bb76e48fa164849c7428ad17f62e1954a7906107969086903490611b02565b60405180910390a3506105bd6001600055565b6107b1611495565b60025481106107d35760405163c325ae3360e01b815260040160405180910390fd5b6000600282815481106107e8576107e86119a3565b6000918252602082206007909102019150600382810154600160a01b900460ff1690811115610819576108196116ba565b146108375760405163fe89421760e01b815260040160405180910390fd5b6002810154336001600160a01b03909116036108665760405163fe89421760e01b815260040160405180910390fd5b6003810180546001600160a81b0319163360ff60a01b19811691909117600160a01b17909155600081815260046020908152604080832080546001810182559084529183209091018590555184917fc8717b61398fb9d7cacf49fe1e296b2f10e9711226b532842b6ffd642cb6a2c691a3506105bd6001600055565b6108ea61153e565b600254821061090c5760405163c325ae3360e01b815260040160405180910390fd5b6002828154811061091f5761091f6119a3565b906000526020600020906007020160405180610100016040529081600082018054610949906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610975906119b9565b80156109c25780601f10610997576101008083540402835291602001916109c2565b820191906000526020600020905b8154815290600101906020018083116109a557829003601f168201915b50505091835250506001820154602082015260028201546001600160a01b0390811660408301526003808401549182166060840152608090920191600160a01b90910460ff1690811115610a1857610a186116ba565b6003811115610a2957610a296116ba565b8152602001600482018054610a3d906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610a69906119b9565b8015610ab65780601f10610a8b57610100808354040283529160200191610ab6565b820191906000526020600020905b815481529060010190602001808311610a9957829003601f168201915b50505050508152602001600582015481526020016006820154815250509050919050565b6002546000908310610aee57506000610b2c565b816001600160a01b031660028481548110610b0b57610b0b6119a3565b60009182526020909120600260079092020101546001600160a01b03161490505b92915050565b60046020528160005260406000208181548110610b4e57600080fd5b90600052602060002001600091509150505481565b6002546000908310610b7757506000610b2c565b816001600160a01b031660028481548110610b9457610b946119a3565b60009182526020909120600790910201600301546001600160a01b0316149392505050565b6001600160a01b038116600090815260036020908152604091829020805483518184028101840190945280845260609392830182828015610c1957602002820191906000526020600020905b815481526020019060010190808311610c05575b50505050509050919050565b60606000610c338385611b3a565b600254909150811115610c4557506002545b6002548410610c88576040805160008082526020820190925290610c7f565b610c6c61153e565b815260200190600190039081610c645790505b50915050610b2c565b6000610c948583611b4d565b67ffffffffffffffff811115610cac57610cac61159c565b604051908082528060200260200182016040528015610ce557816020015b610cd261153e565b815260200190600190039081610cca5790505b509050845b82811015610ef35760028181548110610d0557610d056119a3565b906000526020600020906007020160405180610100016040529081600082018054610d2f906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610d5b906119b9565b8015610da85780601f10610d7d57610100808354040283529160200191610da8565b820191906000526020600020905b815481529060010190602001808311610d8b57829003601f168201915b50505091835250506001820154602082015260028201546001600160a01b0390811660408301526003808401549182166060840152608090920191600160a01b90910460ff1690811115610dfe57610dfe6116ba565b6003811115610e0f57610e0f6116ba565b8152602001600482018054610e23906119b9565b80601f0160208091040260200160405190810160405280929190818152602001828054610e4f906119b9565b8015610e9c5780601f10610e7157610100808354040283529160200191610e9c565b820191906000526020600020905b815481529060010190602001808311610e7f57829003601f168201915b50505091835250506005820154602082015260069091015460409091015282610ec58884611b4d565b81518110610ed557610ed56119a3565b60200260200101819052508080610eeb90611b60565b915050610cea565b50949350505050565b6001600160a01b038116600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015610c195760200282019190600052602060002090815481526020019060010190808311610c055750505050509050919050565b610f6e6114bf565b610f7860006114ec565b565b610f82611495565b6002548210610fa45760405163c325ae3360e01b815260040160405180910390fd5b600060028381548110610fb957610fb96119a3565b600091825260209091206003600790920201908101549091506001600160a01b03163314610ffa57604051630d04a16d60e11b815260040160405180910390fd5b6001600382810154600160a01b900460ff169081111561101c5761101c6116ba565b1461103a5760405163109d83db60e11b815260040160405180910390fd5b600481016110488382611a42565b5060038101805460ff60a01b1916600160a11b179055426006820155604051339084907f156ab7cd603565d08601ecdc345fe8e8aa82302e835d4df3bff0ec4f005809ed90611098908690611b79565b60405180910390a3506110ab6001600055565b5050565b60025460009083106110c357506000610b2c565b6000600284815481106110d8576110d86119a3565b6000918252602090912060079091020190506002600382810154600160a01b900460ff169081111561110c5761110c6116ba565b148015611128575060028101546001600160a01b038481169116145b949350505050565b6002818154811061114057600080fd5b9060005260206000209060070201600091509050806000018054611163906119b9565b80601f016020809104026020016040519081016040528092919081815260200182805461118f906119b9565b80156111dc5780601f106111b1576101008083540402835291602001916111dc565b820191906000526020600020905b8154815290600101906020018083116111bf57829003601f168201915b50505050600183015460028401546003850154600486018054959693956001600160a01b03938416955092821693600160a01b90920460ff169261121f906119b9565b80601f016020809104026020016040519081016040528092919081815260200182805461124b906119b9565b80156112985780601f1061126d57610100808354040283529160200191611298565b820191906000526020600020905b81548152906001019060200180831161127b57829003601f168201915b5050505050908060050154908060060154905088565b60025460009083106112c257506000610b2c565b6000600284815481106112d7576112d76119a3565b6000918252602090912060079091020190506001600382810154600160a01b900460ff169081111561130b5761130b6116ba565b1480156111285750600301546001600160a01b0392831692169190911492915050565b60036020528160005260406000208181548110610b4e57600080fd5b6113526114bf565b60006113666001546001600160a01b031690565b6001600160a01b03164760405160006040518083038185875af1925050503d80600081146113b0576040519150601f19603f3d011682016040523d82523d6000602084013e6113b5565b606091505b50509050806105bd576040516312171d8360e31b815260040160405180910390fd5b60025460009083106113eb57506000610b2c565b600060028481548110611400576114006119a3565b6000918252602082206007909102019150600382810154600160a01b900460ff1690811115611431576114316116ba565b1480156111285750600201546001600160a01b039283169216919091141592915050565b61145d6114bf565b6001600160a01b03811661148c57604051631e4fbdf760e01b8152600060048201526024015b60405180910390fd5b6105bd816114ec565b6002600054036114b857604051633ee5aeb560e01b815260040160405180910390fd5b6002600055565b6001546001600160a01b03163314610f785760405163118cdaa760e01b8152336004820152602401611483565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b60408051610100810182526060808252600060208301819052928201839052810182905290608082019081526020016060815260200160008152602001600081525090565b60006020828403121561159557600080fd5b5035919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126115c357600080fd5b813567ffffffffffffffff808211156115de576115de61159c565b604051601f8301601f19908116603f011681019082821181831017156116065761160661159c565b8160405283815286602085880101111561161f57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60006020828403121561165157600080fd5b813567ffffffffffffffff81111561166857600080fd5b611128848285016115b2565b6000815180845260005b8181101561169a5760208185018101518683018201520161167e565b506000602082860101526020601f19601f83011685010191505092915050565b634e487b7160e01b600052602160045260246000fd5b600481106116ee57634e487b7160e01b600052602160045260246000fd5b9052565b6000610100825181855261170882860182611674565b91505060208301516020850152604083015160018060a01b0380821660408701528060608601511660608701525050608083015161174960808601826116d0565b5060a083015184820360a08601526117618282611674565b91505060c083015160c085015260e083015160e08501528091505092915050565b60208152600061179560208301846116f2565b9392505050565b80356001600160a01b03811681146117b357600080fd5b919050565b600080604083850312156117cb57600080fd5b823591506117db6020840161179c565b90509250929050565b600080604083850312156117f757600080fd5b6118008361179c565b946020939093013593505050565b60006020828403121561182057600080fd5b6117958261179c565b6020808252825182820181905260009190848201906040850190845b8181101561186157835183529284019291840191600101611845565b50909695505050505050565b6000806040838503121561188057600080fd5b50508035926020909101359150565b6000602080830181845280855180835260408601915060408160051b870101925083870160005b828110156118e457603f198886030184526118d28583516116f2565b945092850192908501906001016118b6565b5092979650505050505050565b6000806040838503121561190457600080fd5b82359150602083013567ffffffffffffffff81111561192257600080fd5b61192e858286016115b2565b9150509250929050565b600061010080835261194c8184018c611674565b602084018b90526001600160a01b038a8116604086015289166060850152905061197960808401886116d0565b82810360a084015261198b8187611674565b60c0840195909552505060e001529695505050505050565b634e487b7160e01b600052603260045260246000fd5b600181811c908216806119cd57607f821691505b6020821081036119ed57634e487b7160e01b600052602260045260246000fd5b50919050565b601f821115611a3d57600081815260208120601f850160051c81016020861015611a1a5750805b601f850160051c820191505b81811015611a3957828155600101611a26565b5050505b505050565b815167ffffffffffffffff811115611a5c57611a5c61159c565b611a7081611a6a84546119b9565b846119f3565b602080601f831160018114611aa55760008415611a8d5750858301515b600019600386901b1c1916600185901b178555611a39565b600085815260208120601f198616915b82811015611ad457888601518255948401946001909101908401611ab5565b5085821015611af25787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b604081526000611b156040830185611674565b90508260208301529392505050565b634e487b7160e01b600052601160045260246000fd5b80820180821115610b2c57610b2c611b24565b81810381811115610b2c57610b2c611b24565b600060018201611b7257611b72611b24565b5060010190565b602081526000611795602083018461167456fea264697066735822122072e36c3deb81f385834bdd74d2192dfb2e5f675c7bc1dede2aea6276fa05488664736f6c63430008140033",
+  "devdoc": {
+    "details": "简化版AI代理任务管理器，直接使用原生MON代币",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ],
+      "ReentrancyGuardReentrantCall()": [
+        {
+          "details": "Unauthorized reentrant call."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "acceptTask(uint256)": {
+        "details": "接受任务",
+        "params": {
+          "_taskId": "任务ID"
+        }
+      },
+      "approveTask(uint256)": {
+        "details": "审核并支付任务",
+        "params": {
+          "_taskId": "任务ID"
+        }
+      },
+      "canAcceptTask(uint256,address)": {
+        "details": "检查是否可以接受任务"
+      },
+      "canApproveTask(uint256,address)": {
+        "details": "检查是否可以审核任务"
+      },
+      "canCompleteTask(uint256,address)": {
+        "details": "检查是否可以完成任务"
+      },
+      "completeTask(uint256,string)": {
+        "details": "完成任务",
+        "params": {
+          "_resultURI": "结果URI",
+          "_taskId": "任务ID"
+        }
+      },
+      "createTask(string)": {
+        "details": "创建任务",
+        "params": {
+          "_prompt": "任务提示词"
+        }
+      },
+      "emergencyWithdraw()": {
+        "details": "紧急提取（仅合约所有者）"
+      },
+      "getAllTasks(uint256,uint256)": {
+        "details": "获取所有任务",
+        "params": {
+          "_count": "数量",
+          "_start": "开始索引"
+        }
+      },
+      "getTask(uint256)": {
+        "details": "获取任务信息",
+        "params": {
+          "_taskId": "任务ID"
+        }
+      },
+      "getTaskCount()": {
+        "details": "获取任务总数"
+      },
+      "getTasksByCreator(address)": {
+        "details": "获取创建者的任务列表",
+        "params": {
+          "_creator": "创建者地址"
+        }
+      },
+      "getTasksByWorker(address)": {
+        "details": "获取工作者的任务列表",
+        "params": {
+          "_worker": "工作者地址"
+        }
+      },
+      "isTaskCreator(uint256,address)": {
+        "details": "检查是否为任务创建者"
+      },
+      "isTaskWorker(uint256,address)": {
+        "details": "检查是否为任务工作者"
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "AgentTaskManagerSimple",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 188,
+        "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+        "label": "_status",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 8,
+        "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 282,
+        "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+        "label": "tasks",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_array(t_struct(Task)278_storage)dyn_storage"
+      },
+      {
+        "astId": 287,
+        "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+        "label": "creatorTasks",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 292,
+        "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+        "label": "workerTasks",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_struct(Task)278_storage)dyn_storage": {
+        "base": "t_struct(Task)278_storage",
+        "encoding": "dynamic_array",
+        "label": "struct AgentTaskManagerSimple.Task[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_enum(TaskState)260": {
+        "encoding": "inplace",
+        "label": "enum AgentTaskManagerSimple.TaskState",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Task)278_storage": {
+        "encoding": "inplace",
+        "label": "struct AgentTaskManagerSimple.Task",
+        "members": [
+          {
+            "astId": 262,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "prompt",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 264,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "reward",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 266,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "creator",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address"
+          },
+          {
+            "astId": 268,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "worker",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address"
+          },
+          {
+            "astId": 271,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "state",
+            "offset": 20,
+            "slot": "3",
+            "type": "t_enum(TaskState)260"
+          },
+          {
+            "astId": 273,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "resultURI",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 275,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "createdAt",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 277,
+            "contract": "contracts/AgentTaskManagerSimple.sol:AgentTaskManagerSimple",
+            "label": "completedAt",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "224"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
