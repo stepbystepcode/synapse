@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { parseEther } from "viem";
 import { useAccount } from "wagmi";
-import { 
+import {
   CheckCircleIcon,
   CurrencyDollarIcon,
   DocumentTextIcon,
@@ -13,7 +14,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { Address, EtherInput, InputBase } from "~~/components/scaffold-eth";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { parseEther } from "viem";
 
 // 任务状态枚举
 enum TaskState {
@@ -71,13 +71,13 @@ const Home: NextPage = () => {
   const testContractStatus = async () => {
     try {
       setMessage("测试合约状态中...");
-      
+
       // 检查任务总数和任务列表
       if (taskCount && Number(taskCount) > 0) {
         setMessage(`✅ 合约状态正常，当前有 ${taskCount.toString()} 个任务`);
         console.log("任务总数:", taskCount.toString());
         console.log("当前任务列表:", tasks);
-        
+
         // 尝试检查合约是否被暂停
         if (tasks.length > 0) {
           const firstTask = tasks[0];
@@ -138,7 +138,7 @@ const Home: NextPage = () => {
 
     try {
       const rewardAmount = parseEther(newTaskReward);
-      
+
       setMessage("创建任务中...");
       await createTask({
         functionName: "createTask",
@@ -149,7 +149,7 @@ const Home: NextPage = () => {
       setMessage("✅ 任务创建成功！");
       setNewTaskPrompt("");
       setNewTaskReward("");
-      
+
       // 刷新任务列表
       await refetchTasks();
     } catch (error) {
@@ -168,7 +168,7 @@ const Home: NextPage = () => {
         args: [BigInt(taskId)],
       });
       setMessage("✅ 任务接受成功！");
-      
+
       // 刷新任务列表
       await refetchTasks();
     } catch (error) {
@@ -179,7 +179,7 @@ const Home: NextPage = () => {
 
   const handleSubmitResult = async (taskId: number) => {
     if (!resultURI) return;
-    
+
     try {
       setMessage("提交成果中...");
       await completeTask({
@@ -187,10 +187,10 @@ const Home: NextPage = () => {
         args: [BigInt(taskId), resultURI],
       });
       setMessage("✅ 成果提交成功！");
-      
+
       // 刷新任务列表
       await refetchTasks();
-      
+
       setResultURI("");
       setSelectedTask(null);
     } catch (error) {
@@ -207,7 +207,7 @@ const Home: NextPage = () => {
         args: [BigInt(taskId)],
       });
       setMessage("✅ 任务审核并支付成功！");
-      
+
       // 刷新任务列表
       await refetchTasks();
     } catch (error) {
@@ -260,7 +260,7 @@ const Home: NextPage = () => {
                 <p className="font-bold text-lg">{taskCount?.toString() || "0"}</p>
               </div>
             </div>
-            
+
             {/* 诊断信息 */}
             <div className="mt-4 p-3 bg-base-200 rounded-lg">
               <h3 className="text-sm font-semibold mb-2">🔍 诊断信息</h3>
@@ -271,53 +271,15 @@ const Home: NextPage = () => {
                 {taskCount !== undefined && Number(taskCount) > 0 && tasks.length === 0 && (
                   <p className="text-warning">⚠️ 任务总数与显示任务数不匹配，可能存在数据同步问题</p>
                 )}
-                {/* Circuit Breaker 状态 */}
-                <div className="mt-2 p-2 bg-warning/20 rounded border-l-4 border-warning">
-                  <p className="font-semibold text-warning">⚠️ Circuit Breaker 状态</p>
-                  <p className="text-xs">合约可能被暂停，写入操作被阻止</p>
-                  <p className="text-xs">建议：联系合约管理员或等待恢复</p>
-                </div>
               </div>
             </div>
-            
+
             <div className="mt-4 flex justify-end gap-2">
-              <button 
-                className="btn btn-outline btn-sm"
-                onClick={() => refetchTasks()}
-              >
+              <button className="btn btn-outline btn-sm" onClick={() => refetchTasks()}>
                 🔄 刷新任务列表
               </button>
-              <button 
-                className="btn btn-outline btn-sm"
-                onClick={testContractStatus}
-              >
+              <button className="btn btn-outline btn-sm" onClick={testContractStatus}>
                 🔍 测试合约状态
-              </button>
-              <button 
-                className="btn btn-outline btn-sm"
-                onClick={async () => {
-                  try {
-                    setMessage("诊断 Circuit Breaker 错误中...");
-                    
-                    // 检查是否有任务
-                    if (taskCount && Number(taskCount) > 0) {
-                      // 尝试读取第一个任务来测试合约状态
-                      const firstTask = tasks[0];
-                      if (firstTask) {
-                        setMessage(`📋 第一个任务状态: ${["开放", "进行中", "已完成", "已审核"][firstTask.state]}`);
-                        console.log("第一个任务详情:", firstTask);
-                      } else {
-                        setMessage("⚠️ 无法获取任务详情，可能存在数据同步问题");
-                      }
-                    } else {
-                      setMessage("ℹ️ 当前没有任务，无法进行诊断");
-                    }
-                  } catch (error) {
-                    setMessage(`❌ 诊断失败: ${error instanceof Error ? error.message : "未知错误"}`);
-                  }
-                }}
-              >
-                ⚠️ 诊断错误
               </button>
             </div>
           </div>
@@ -366,11 +328,11 @@ const Home: NextPage = () => {
 
           {/* 消息显示 */}
           {message && (
-            <div className={`alert mb-6 ${
-              message.includes("成功") ? "alert-success" : 
-              message.includes("失败") ? "alert-error" : 
-              "alert-info"
-            }`}>
+            <div
+              className={`alert mb-6 ${
+                message.includes("成功") ? "alert-success" : message.includes("失败") ? "alert-error" : "alert-info"
+              }`}
+            >
               <span>{message}</span>
             </div>
           )}
@@ -438,37 +400,22 @@ const Home: NextPage = () => {
 
                   {/* 操作按钮 */}
                   <div className="card-actions justify-end mt-4">
-                    {/* 调试按钮 */}
-                    <button 
-                      className="btn btn-ghost btn-xs"
-                      onClick={() => {
-                        console.log("任务详情:", task);
-                        setMessage(`📋 任务 #${task.id} 状态: ${["开放", "进行中", "已完成", "已审核"][task.state]}`);
-                      }}
-                      title="检查任务状态"
-                    >
-                      🔍
-                    </button>
-                    
                     {task.state === TaskState.Open && task.creator !== connectedAddress && (
                       <div className="space-y-2">
-                        <button 
-                          className="btn btn-success btn-sm" 
+                        <button
+                          className="btn btn-success btn-sm"
                           onClick={() => handleAcceptTask(task.id)}
                           disabled={!connectedAddress}
                         >
                           <CheckCircleIcon className="h-4 w-4" />
                           接受任务
                         </button>
-                        <div className="text-xs text-warning bg-warning/10 p-2 rounded">
-                          ⚠️ 注意：当前合约可能被暂停，接受任务可能失败
-                        </div>
                       </div>
                     )}
 
                     {task.state === TaskState.InProgress && task.worker === connectedAddress && (
-                      <button 
-                        className="btn btn-warning btn-sm" 
+                      <button
+                        className="btn btn-warning btn-sm"
                         onClick={() => setSelectedTask(task)}
                         disabled={!connectedAddress}
                       >
@@ -478,8 +425,8 @@ const Home: NextPage = () => {
                     )}
 
                     {task.state === TaskState.Completed && task.creator === connectedAddress && (
-                      <button 
-                        className="btn btn-primary btn-sm" 
+                      <button
+                        className="btn btn-primary btn-sm"
                         onClick={() => handleApproveTask(task.id)}
                         disabled={!connectedAddress}
                       >
@@ -551,7 +498,9 @@ const Home: NextPage = () => {
           <div className="bg-base-100 p-6 rounded-lg mt-8 shadow-xl">
             <h2 className="text-xl font-semibold mb-4">🔗 合约信息</h2>
             <div className="space-y-2">
-              <p><strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5</p>
+              <p>
+                <strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5
+              </p>
             </div>
             <div className="mt-4 p-4 bg-base-200 rounded-lg">
               <h3 className="font-semibold mb-2">💡 简化优势</h3>
