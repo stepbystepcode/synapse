@@ -15,7 +15,7 @@ import {
 import { Address, EtherInput, InputBase } from "~~/components/scaffold-eth";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
-// 任务状态枚举
+// Task state enum
 enum TaskState {
   Open = 0,
   InProgress = 1,
@@ -23,7 +23,7 @@ enum TaskState {
   Approved = 3,
 }
 
-// 任务结构体类型
+// Task structure type
 interface Task {
   id: number;
   creator: string;
@@ -44,13 +44,13 @@ const Home: NextPage = () => {
   const [resultURI, setResultURI] = useState("");
   const [message, setMessage] = useState("");
 
-  // // 读取合约数据
+  // // Read contract data
   // const { data: taskCount } = useScaffoldReadContract({
   //   contractName: "AgentTaskManagerSimple",
   //   functionName: "getTaskCount",
   // });
 
-  // 写入合约
+  // Write contract
   const { writeContractAsync: createTask } = useScaffoldWriteContract({
     contractName: "AgentTaskManagerSimple",
   });
@@ -67,44 +67,44 @@ const Home: NextPage = () => {
     contractName: "AgentTaskManagerSimple",
   });
 
-  // 测试合约状态的函数
+  // Test contract status function
   // const testContractStatus = async () => {
   //   try {
-  //     setMessage("测试合约状态中...");
+  //     setMessage("Testing contract status...");
 
-  //     // 检查任务总数和任务列表
+  //     // Check task count and task list
   //     if (taskCount && Number(taskCount) > 0) {
-  //       setMessage(`✅ 合约状态正常，当前有 ${taskCount.toString()} 个任务`);
-  //       console.log("任务总数:", taskCount.toString());
-  //       console.log("当前任务列表:", tasks);
+  //       setMessage(`✅ Contract status normal, currently has ${taskCount.toString()} tasks`);
+  //       console.log("Task count:", taskCount.toString());
+  //       console.log("Current task list:", tasks);
 
-  //       // 尝试检查合约是否被暂停
+  //       // Try to check if contract is paused
   //       if (tasks.length > 0) {
   //         const firstTask = tasks[0];
   //         if (firstTask.state === TaskState.Open && firstTask.creator !== connectedAddress) {
-  //           setMessage(`✅ 合约状态正常，任务 #${firstTask.id} 可以接受`);
+  //           setMessage(`✅ Contract status normal, task #${firstTask.id} can be accepted`);
   //         } else {
-  //           setMessage(`⚠️ 任务 #${firstTask.id} 状态: ${["开放", "进行中", "已完成", "已审核"][firstTask.state]}`);
+  //           setMessage(`⚠️ Task #${firstTask.id} status: ${["Open", "In Progress", "Completed", "Approved"][firstTask.state]}`);
   //         }
   //       }
   //     } else if (taskCount === BigInt(0)) {
-  //       setMessage("✅ 合约状态正常，但当前没有任务");
+  //       setMessage("✅ Contract status normal, but no tasks currently");
   //     } else {
-  //       setMessage("⚠️ 无法读取任务总数，合约可能有问题");
+  //       setMessage("⚠️ Unable to read task count, contract may have issues");
   //     }
   //   } catch (error) {
-  //     setMessage(`❌ 合约状态测试失败: ${error instanceof Error ? error.message : "未知错误"}`);
+  //     setMessage(`❌ Contract status test failed: ${error instanceof Error ? error.message : "Unknown error"}`);
   //   }
   // };
 
-  // 读取所有任务
+  // Read all tasks
   const { data: allTasks, refetch: refetchTasks } = useScaffoldReadContract({
     contractName: "AgentTaskManagerSimple",
     functionName: "getAllTasks",
-    args: [BigInt(0), BigInt(100)], // 读取前100个任务
+    args: [BigInt(0), BigInt(100)], // Read first 100 tasks
   });
 
-  // 当任务数据更新时，转换格式并设置到本地状态
+  // When task data updates, convert format and set to local state
   useEffect(() => {
     if (allTasks && allTasks.length > 0) {
       const formattedTasks: Task[] = allTasks.map((task: any, index: number) => ({
@@ -124,12 +124,12 @@ const Home: NextPage = () => {
 
   const handleCreateTask = async () => {
     if (!connectedAddress) {
-      setMessage("请先连接钱包");
+      setMessage("Please connect wallet first");
       return;
     }
 
     if (!newTaskPrompt.trim()) {
-      setMessage("请输入任务提示词");
+      setMessage("Please enter task prompt");
       return;
     }
 
@@ -139,22 +139,22 @@ const Home: NextPage = () => {
     try {
       const rewardAmount = parseEther(newTaskReward);
 
-      setMessage("创建任务中...");
+      setMessage("Creating task...");
       await createTask({
         functionName: "createTask",
         args: [newTaskPrompt],
         value: rewardAmount,
       });
 
-      setMessage("✅ 任务创建成功！");
+      setMessage("✅ Task created successfully!");
       setNewTaskPrompt("");
       setNewTaskReward("");
 
-      // 刷新任务列表
+      // Refresh task list
       await refetchTasks();
     } catch (error) {
-      console.error("创建任务失败:", error);
-      setMessage(`❌ 创建任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+      console.error("Failed to create task:", error);
+      setMessage(`❌ Failed to create task: ${error instanceof Error ? error.message : "Unknown error"}`);
     } finally {
       setIsCreatingTask(false);
     }
@@ -162,18 +162,18 @@ const Home: NextPage = () => {
 
   const handleAcceptTask = async (taskId: number) => {
     try {
-      setMessage("接受任务中...");
+      setMessage("Accepting task...");
       await acceptTask({
         functionName: "acceptTask",
         args: [BigInt(taskId)],
       });
-      setMessage("✅ 任务接受成功！");
+      setMessage("✅ Task accepted successfully!");
 
-      // 刷新任务列表
+      // Refresh task list
       await refetchTasks();
     } catch (error) {
-      console.error("接受任务失败:", error);
-      setMessage(`❌ 接受任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+      console.error("Failed to accept task:", error);
+      setMessage(`❌ Failed to accept task: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };
 
@@ -181,53 +181,53 @@ const Home: NextPage = () => {
     if (!resultURI) return;
 
     try {
-      setMessage("提交成果中...");
+      setMessage("Submitting result...");
       await completeTask({
         functionName: "completeTask",
         args: [BigInt(taskId), resultURI],
       });
-      setMessage("✅ 成果提交成功！");
+      setMessage("✅ Result submitted successfully!");
 
-      // 刷新任务列表
+      // Refresh task list
       await refetchTasks();
 
       setResultURI("");
       setSelectedTask(null);
     } catch (error) {
-      console.error("提交成果失败:", error);
-      setMessage(`❌ 提交成果失败: ${error instanceof Error ? error.message : "未知错误"}`);
+      console.error("Failed to submit result:", error);
+      setMessage(`❌ Failed to submit result: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };
 
   const handleApproveTask = async (taskId: number) => {
     try {
-      setMessage("审核任务中...");
+      setMessage("Approving task...");
       await approveTask({
         functionName: "approveTask",
         args: [BigInt(taskId)],
       });
-      setMessage("✅ 任务审核并支付成功！");
+      setMessage("✅ Task approved and payment successful!");
 
-      // 刷新任务列表
+      // Refresh task list
       await refetchTasks();
     } catch (error) {
-      console.error("审核任务失败:", error);
-      setMessage(`❌ 审核任务失败: ${error instanceof Error ? error.message : "未知错误"}`);
+      console.error("Failed to approve task:", error);
+      setMessage(`❌ Failed to approve task: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };
 
   const getTaskStateBadge = (state: TaskState) => {
     switch (state) {
       case TaskState.Open:
-        return <span className="badge badge-info">开放中</span>;
+        return <span className="badge badge-info">Open</span>;
       case TaskState.InProgress:
-        return <span className="badge badge-warning">进行中</span>;
+        return <span className="badge badge-warning">In Progress</span>;
       case TaskState.Completed:
-        return <span className="badge badge-secondary">已完成</span>;
+        return <span className="badge badge-secondary">Completed</span>;
       case TaskState.Approved:
-        return <span className="badge badge-success">已支付</span>;
+        return <span className="badge badge-success">Paid</span>;
       default:
-        return <span className="badge">未知</span>;
+        return <span className="badge">Unknown</span>;
     }
   };
 
@@ -238,25 +238,25 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="min-h-screen bg-base-200">
-        {/* 页面标题 */}
+        {/* Page title */}
         <div className="container mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary mb-4">🤖 AI Agent 任务市场</h1>
-            <p className="text-xl text-base-content/70">在 Monad 测试网上发布和接受 AI 任务</p>
+            <h1 className="text-4xl font-bold text-primary mb-4">🤖 AI Agent Task Market</h1>
+            <p className="text-xl text-base-content/70">Publish and accept AI tasks on Monad testnet</p>
           </div>
         </div>
 
         <div className="container mx-auto px-4 py-8">
-          {/* 状态信息
+          {/* Status information
           <div className="bg-base-100 p-6 rounded-lg mb-8 shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">📊 当前状态</h2>
+            <h2 className="text-xl font-semibold mb-4">📊 Current Status</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-base-content/70">钱包地址:</p>
+                <p className="text-sm text-base-content/70">Wallet Address:</p>
                 <Address address={connectedAddress} />
               </div>
               <div>
-                <p className="text-sm text-base-content/70">任务总数:</p>
+                <p className="text-sm text-base-content/70">Total Tasks:</p>
                 <p className="font-bold text-lg">{taskCount?.toString() || "0"}</p>
               </div>
             </div>
@@ -266,39 +266,39 @@ const Home: NextPage = () => {
                 className="btn btn-outline btn-sm"
                 onClick={() => refetchTasks()}
               >
-                🔄 刷新任务列表
+                🔄 Refresh Task List
               </button>
               <button 
                 className="btn btn-outline btn-sm"
                 onClick={testContractStatus}
               >
-                🔍 测试合约状态
+                🔍 Test Contract Status
               </button>
 
             </div>
           </div> */}
 
-          {/* 创建任务表单 */}
+          {/* Create task form */}
           <div className="card bg-base-100 shadow-xl mb-8">
             <div className="card-body">
               <h2 className="card-title text-xl mb-4">
                 <PlusIcon className="h-6 w-6 text-primary" />
-                发布新任务
+                Publish New Task
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="label">
-                    <span className="label-text">任务描述 (Prompt)</span>
+                    <span className="label-text">Task Description (Prompt)</span>
                   </label>
                   <InputBase
-                    placeholder="例如：生成一张未来科技风格的城市夜景图片"
+                    placeholder="e.g., Generate a futuristic city nightscape image"
                     value={newTaskPrompt}
                     onChange={setNewTaskPrompt}
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">奖励金额 (MON)</span>
+                    <span className="label-text">Reward Amount (MON)</span>
                   </label>
                   <EtherInput placeholder="0.1" value={newTaskReward} onChange={setNewTaskReward} />
                 </div>
@@ -314,37 +314,41 @@ const Home: NextPage = () => {
                   ) : (
                     <PlusIcon className="h-5 w-5" />
                   )}
-                  {isCreatingTask ? "创建中..." : "发布任务"}
+                  {isCreatingTask ? "Creating..." : "Publish Task"}
                 </button>
               </div>
             </div>
           </div>
 
-          {/* 消息显示 */}
+          {/* Message display */}
           {message && (
             <div
               className={`alert mb-6 ${
-                message.includes("成功") ? "alert-success" : message.includes("失败") ? "alert-error" : "alert-info"
+                message.includes("successfully")
+                  ? "alert-success"
+                  : message.includes("Failed")
+                    ? "alert-error"
+                    : "alert-info"
               }`}
             >
               <span>{message}</span>
             </div>
           )}
 
-          {/* 任务列表 */}
+          {/* Task list */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {tasks.map(task => (
               <div key={task.id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
                 <div className="card-body">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="card-title text-lg">任务 #{task.id}</h3>
+                    <h3 className="card-title text-lg">Task #{task.id}</h3>
                     {getTaskStateBadge(task.state)}
                   </div>
 
                   <div className="space-y-3">
                     <div>
                       <label className="label">
-                        <span className="label-text font-semibold">任务描述:</span>
+                        <span className="label-text font-semibold">Task Description:</span>
                       </label>
                       <p className="text-sm bg-base-200 p-3 rounded-lg">{task.prompt}</p>
                     </div>
@@ -352,7 +356,7 @@ const Home: NextPage = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
                         <UserIcon className="h-4 w-4 text-primary" />
-                        <span className="text-sm">发布者:</span>
+                        <span className="text-sm">Creator:</span>
                       </div>
                       <Address address={task.creator} format="short" />
                     </div>
@@ -361,7 +365,7 @@ const Home: NextPage = () => {
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <UserIcon className="h-4 w-4 text-success" />
-                          <span className="text-sm">执行者:</span>
+                          <span className="text-sm">Worker:</span>
                         </div>
                         <Address address={task.worker} format="short" />
                       </div>
@@ -370,7 +374,7 @@ const Home: NextPage = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
                         <CurrencyDollarIcon className="h-4 w-4 text-warning" />
-                        <span className="text-sm">奖励:</span>
+                        <span className="text-sm">Reward:</span>
                       </div>
                       <span className="font-bold text-lg text-primary">{formatReward(task.reward)} MON</span>
                     </div>
@@ -378,7 +382,7 @@ const Home: NextPage = () => {
                     {task.resultURI && (
                       <div>
                         <label className="label">
-                          <span className="label-text font-semibold">成果链接:</span>
+                          <span className="label-text font-semibold">Result Link:</span>
                         </label>
                         <a
                           href={task.resultURI}
@@ -392,7 +396,7 @@ const Home: NextPage = () => {
                     )}
                   </div>
 
-                  {/* 操作按钮 */}
+                  {/* Action buttons */}
                   <div className="card-actions justify-end mt-4">
                     {task.state === TaskState.Open && task.creator !== connectedAddress && (
                       <div className="space-y-2">
@@ -402,7 +406,7 @@ const Home: NextPage = () => {
                           disabled={!connectedAddress}
                         >
                           <CheckCircleIcon className="h-4 w-4" />
-                          接受任务
+                          Accept Task
                         </button>
                       </div>
                     )}
@@ -414,7 +418,7 @@ const Home: NextPage = () => {
                         disabled={!connectedAddress}
                       >
                         <DocumentTextIcon className="h-4 w-4" />
-                        提交成果
+                        Submit Result
                       </button>
                     )}
 
@@ -425,7 +429,7 @@ const Home: NextPage = () => {
                         disabled={!connectedAddress}
                       >
                         <CheckCircleIcon className="h-4 w-4" />
-                        审核并支付
+                        Approve & Pay
                       </button>
                     )}
                   </div>
@@ -434,23 +438,23 @@ const Home: NextPage = () => {
             ))}
           </div>
 
-          {/* 提交成果模态框 */}
+          {/* Submit result modal */}
           {selectedTask && (
             <div className="modal modal-open">
               <div className="modal-box">
-                <h3 className="font-bold text-lg mb-4">提交任务成果</h3>
+                <h3 className="font-bold text-lg mb-4">Submit Task Result</h3>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">成果链接 (图片URL)</span>
+                    <span className="label-text">Result Link (Image URL)</span>
                   </label>
                   <InputBase
-                    placeholder="例如：https://cataas.com/cat/says/Your%20Result"
+                    placeholder="e.g., https://cataas.com/cat/says/Your%20Result"
                     value={resultURI}
                     onChange={setResultURI}
                   />
                   <label className="label">
                     <span className="label-text-alt">
-                      提示：可以访问{" "}
+                      Tip: You can visit{" "}
                       <a
                         href="https://cataas.com"
                         target="_blank"
@@ -459,50 +463,50 @@ const Home: NextPage = () => {
                       >
                         cataas.com
                       </a>{" "}
-                      获取随机猫咪图片作为示例
+                      to get random cat images as examples
                     </span>
                   </label>
                 </div>
                 <div className="modal-action">
                   <button className="btn btn-ghost" onClick={() => setSelectedTask(null)}>
-                    取消
+                    Cancel
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => handleSubmitResult(selectedTask.id)}
                     disabled={!resultURI}
                   >
-                    提交成果
+                    Submit Result
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* 空状态 */}
+          {/* Empty state */}
           {tasks.length === 0 && (
             <div className="text-center py-12">
               <PhotoIcon className="h-24 w-24 text-base-content/30 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">暂无任务</h3>
-              <p className="text-base-content/70">成为第一个发布任务的人吧！</p>
+              <h3 className="text-xl font-semibold mb-2">No Tasks Available</h3>
+              <p className="text-base-content/70">Be the first to publish a task!</p>
             </div>
           )}
 
-          {/* 合约信息 */}
+          {/* Contract information */}
           <div className="bg-base-100 p-6 rounded-lg mt-8 shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">🔗 合约信息</h2>
+            <h2 className="text-xl font-semibold mb-4">🔗 Contract Information</h2>
             <div className="space-y-2">
               <p>
                 <strong>AgentTaskManagerSimple:</strong> 0x6915716d240c64315960688E3Ef05ec07D8E6Db5
               </p>
             </div>
             <div className="mt-4 p-4 bg-base-200 rounded-lg">
-              <h3 className="font-semibold mb-2">💡 简化优势</h3>
+              <h3 className="font-semibold mb-2">💡 Simplified Advantages</h3>
               <ul className="text-sm space-y-1">
-                <li>• 直接使用原生 MON 代币，无需 MockUSDC</li>
-                <li>• 创建任务时直接发送 MON，无需授权步骤</li>
-                <li>• 更简单的前端集成和用户体验</li>
-                <li>• 减少 Gas 费用（无需两次交易）</li>
+                <li>• Direct use of native MON token, no MockUSDC needed</li>
+                <li>• Send MON directly when creating tasks, no approval step required</li>
+                <li>• Simpler frontend integration and user experience</li>
+                <li>• Reduced gas fees (no need for two transactions)</li>
               </ul>
             </div>
           </div>
