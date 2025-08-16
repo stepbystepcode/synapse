@@ -44,11 +44,11 @@ const Home: NextPage = () => {
   const [resultURI, setResultURI] = useState("");
   const [message, setMessage] = useState("");
 
-  // 读取合约数据
-  const { data: taskCount } = useScaffoldReadContract({
-    contractName: "AgentTaskManagerSimple",
-    functionName: "getTaskCount",
-  });
+  // // 读取合约数据
+  // const { data: taskCount } = useScaffoldReadContract({
+  //   contractName: "AgentTaskManagerSimple",
+  //   functionName: "getTaskCount",
+  // });
 
   // 写入合约
   const { writeContractAsync: createTask } = useScaffoldWriteContract({
@@ -68,34 +68,34 @@ const Home: NextPage = () => {
   });
 
   // 测试合约状态的函数
-  const testContractStatus = async () => {
-    try {
-      setMessage("测试合约状态中...");
+  // const testContractStatus = async () => {
+  //   try {
+  //     setMessage("测试合约状态中...");
 
-      // 检查任务总数和任务列表
-      if (taskCount && Number(taskCount) > 0) {
-        setMessage(`✅ 合约状态正常，当前有 ${taskCount.toString()} 个任务`);
-        console.log("任务总数:", taskCount.toString());
-        console.log("当前任务列表:", tasks);
+  //     // 检查任务总数和任务列表
+  //     if (taskCount && Number(taskCount) > 0) {
+  //       setMessage(`✅ 合约状态正常，当前有 ${taskCount.toString()} 个任务`);
+  //       console.log("任务总数:", taskCount.toString());
+  //       console.log("当前任务列表:", tasks);
 
-        // 尝试检查合约是否被暂停
-        if (tasks.length > 0) {
-          const firstTask = tasks[0];
-          if (firstTask.state === TaskState.Open && firstTask.creator !== connectedAddress) {
-            setMessage(`✅ 合约状态正常，任务 #${firstTask.id} 可以接受`);
-          } else {
-            setMessage(`⚠️ 任务 #${firstTask.id} 状态: ${["开放", "进行中", "已完成", "已审核"][firstTask.state]}`);
-          }
-        }
-      } else if (taskCount === BigInt(0)) {
-        setMessage("✅ 合约状态正常，但当前没有任务");
-      } else {
-        setMessage("⚠️ 无法读取任务总数，合约可能有问题");
-      }
-    } catch (error) {
-      setMessage(`❌ 合约状态测试失败: ${error instanceof Error ? error.message : "未知错误"}`);
-    }
-  };
+  //       // 尝试检查合约是否被暂停
+  //       if (tasks.length > 0) {
+  //         const firstTask = tasks[0];
+  //         if (firstTask.state === TaskState.Open && firstTask.creator !== connectedAddress) {
+  //           setMessage(`✅ 合约状态正常，任务 #${firstTask.id} 可以接受`);
+  //         } else {
+  //           setMessage(`⚠️ 任务 #${firstTask.id} 状态: ${["开放", "进行中", "已完成", "已审核"][firstTask.state]}`);
+  //         }
+  //       }
+  //     } else if (taskCount === BigInt(0)) {
+  //       setMessage("✅ 合约状态正常，但当前没有任务");
+  //     } else {
+  //       setMessage("⚠️ 无法读取任务总数，合约可能有问题");
+  //     }
+  //   } catch (error) {
+  //     setMessage(`❌ 合约状态测试失败: ${error instanceof Error ? error.message : "未知错误"}`);
+  //   }
+  // };
 
   // 读取所有任务
   const { data: allTasks, refetch: refetchTasks } = useScaffoldReadContract({
@@ -247,7 +247,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="container mx-auto px-4 py-8">
-          {/* 状态信息 */}
+          {/* 状态信息
           <div className="bg-base-100 p-6 rounded-lg mb-8 shadow-xl">
             <h2 className="text-xl font-semibold mb-4">📊 当前状态</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -260,29 +260,23 @@ const Home: NextPage = () => {
                 <p className="font-bold text-lg">{taskCount?.toString() || "0"}</p>
               </div>
             </div>
-
-            {/* 诊断信息 */}
-            <div className="mt-4 p-3 bg-base-200 rounded-lg">
-              <h3 className="text-sm font-semibold mb-2">🔍 诊断信息</h3>
-              <div className="text-xs space-y-1">
-                <p>• 网络: Monad Testnet (ID: 10143)</p>
-                <p>• 合约: {taskCount !== undefined ? "✅ 可连接" : "❌ 连接失败"}</p>
-                <p>• 任务数据: {tasks.length > 0 ? `✅ ${tasks.length} 个任务` : "❌ 无任务数据"}</p>
-                {taskCount !== undefined && Number(taskCount) > 0 && tasks.length === 0 && (
-                  <p className="text-warning">⚠️ 任务总数与显示任务数不匹配，可能存在数据同步问题</p>
-                )}
-              </div>
-            </div>
-
+            
             <div className="mt-4 flex justify-end gap-2">
-              <button className="btn btn-outline btn-sm" onClick={() => refetchTasks()}>
+              <button 
+                className="btn btn-outline btn-sm"
+                onClick={() => refetchTasks()}
+              >
                 🔄 刷新任务列表
               </button>
-              <button className="btn btn-outline btn-sm" onClick={testContractStatus}>
+              <button 
+                className="btn btn-outline btn-sm"
+                onClick={testContractStatus}
+              >
                 🔍 测试合约状态
               </button>
+
             </div>
-          </div>
+          </div> */}
 
           {/* 创建任务表单 */}
           <div className="card bg-base-100 shadow-xl mb-8">
