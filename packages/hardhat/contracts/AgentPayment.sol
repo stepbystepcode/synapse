@@ -3,7 +3,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 /**
  * @title AgentPayment
- * @dev 一个简单的代理支付合约，用于演示部署到 Monad 测试链
+ * @dev 一个简单的代理支付合约
  */
 contract AgentPayment {
     // 事件

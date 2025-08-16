@@ -1,0 +1,260 @@
+{
+  "address": "0xDf56fEed777248cA71d4CAEcC5201f9efa71fCb2",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "PaymentReceived",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaymentWithdrawn",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserTotalPayment",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "makePayment",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalPayments",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "userPayments",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x031db910ad2ec1b011f79b3fe9bd0f338572a8c8ab5485a5a7df8fe8998de843",
+  "receipt": {
+    "to": null,
+    "from": "0x09DdD58c285cfB8871f729042d0bb22Db9Ad41c8",
+    "contractAddress": "0xDf56fEed777248cA71d4CAEcC5201f9efa71fCb2",
+    "transactionIndex": 13,
+    "gasUsed": "388760",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xfae4c633d1f249c31c09554145acc5fb0910971a24e4b89ce9db73220cc99665",
+    "transactionHash": "0x031db910ad2ec1b011f79b3fe9bd0f338572a8c8ab5485a5a7df8fe8998de843",
+    "logs": [],
+    "blockNumber": 31060870,
+    "cumulativeGasUsed": "5827569",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x09DdD58c285cfB8871f729042d0bb22Db9Ad41c8"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "2d02012eb807ebec528b957c8fe5f5f6",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"PaymentReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PaymentWithdrawn\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getUserTotalPayment\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"makePayment\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalPayments\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"userPayments\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"\\u4e00\\u4e2a\\u7b80\\u5355\\u7684\\u4ee3\\u7406\\u652f\\u4ed8\\u5408\\u7ea6\\uff0c\\u7528\\u4e8e\\u6f14\\u793a\\u90e8\\u7f72\\u5230 Monad \\u6d4b\\u8bd5\\u94fe\",\"kind\":\"dev\",\"methods\":{\"getBalance()\":{\"details\":\"\\u83b7\\u53d6\\u5408\\u7ea6\\u4f59\\u989d\"},\"getUserTotalPayment(address)\":{\"details\":\"\\u83b7\\u53d6\\u7528\\u6237\\u603b\\u652f\\u4ed8\\u91d1\\u989d\"},\"makePayment(string)\":{\"details\":\"\\u63a5\\u6536\\u652f\\u4ed8\",\"params\":{\"message\":\"\\u652f\\u4ed8\\u6d88\\u606f\"}},\"withdraw()\":{\"details\":\"\\u63d0\\u53d6\\u5408\\u7ea6\\u4e2d\\u7684\\u8d44\\u91d1\\uff08\\u4ec5\\u6240\\u6709\\u8005\\uff09\"}},\"title\":\"AgentPayment\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/AgentPayment.sol\":\"AgentPayment\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/AgentPayment.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity >=0.8.0 <0.9.0;\\n\\n/**\\n * @title AgentPayment\\n * @dev \\u4e00\\u4e2a\\u7b80\\u5355\\u7684\\u4ee3\\u7406\\u652f\\u4ed8\\u5408\\u7ea6\\uff0c\\u7528\\u4e8e\\u6f14\\u793a\\u90e8\\u7f72\\u5230 Monad \\u6d4b\\u8bd5\\u94fe\\n */\\ncontract AgentPayment {\\n    // \\u4e8b\\u4ef6\\n    event PaymentReceived(address indexed from, uint256 amount, string message);\\n    event PaymentWithdrawn(address indexed to, uint256 amount);\\n    \\n    // \\u72b6\\u6001\\u53d8\\u91cf\\n    address public owner;\\n    uint256 public totalPayments;\\n    mapping(address => uint256) public userPayments;\\n    \\n    // \\u4fee\\u9970\\u7b26\\n    modifier onlyOwner() {\\n        require(msg.sender == owner, \\\"Only owner can call this function\\\");\\n        _;\\n    }\\n    \\n    // \\u6784\\u9020\\u51fd\\u6570\\n    constructor(address initialOwner) {\\n        owner = initialOwner;\\n    }\\n    \\n    /**\\n     * @dev \\u63a5\\u6536\\u652f\\u4ed8\\n     * @param message \\u652f\\u4ed8\\u6d88\\u606f\\n     */\\n    function makePayment(string memory message) external payable {\\n        require(msg.value > 0, \\\"Payment amount must be greater than 0\\\");\\n        \\n        totalPayments += msg.value;\\n        userPayments[msg.sender] += msg.value;\\n        \\n        emit PaymentReceived(msg.sender, msg.value, message);\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u5408\\u7ea6\\u4f59\\u989d\\n     */\\n    function getBalance() external view returns (uint256) {\\n        return address(this).balance;\\n    }\\n    \\n    /**\\n     * @dev \\u83b7\\u53d6\\u7528\\u6237\\u603b\\u652f\\u4ed8\\u91d1\\u989d\\n     */\\n    function getUserTotalPayment(address user) external view returns (uint256) {\\n        return userPayments[user];\\n    }\\n    \\n    /**\\n     * @dev \\u63d0\\u53d6\\u5408\\u7ea6\\u4e2d\\u7684\\u8d44\\u91d1\\uff08\\u4ec5\\u6240\\u6709\\u8005\\uff09\\n     */\\n    function withdraw() external onlyOwner {\\n        uint256 balance = address(this).balance;\\n        require(balance > 0, \\\"No funds to withdraw\\\");\\n        \\n        (bool success, ) = payable(owner).call{value: balance}(\\\"\\\");\\n        require(success, \\\"Withdrawal failed\\\");\\n        \\n        emit PaymentWithdrawn(owner, balance);\\n    }\\n    \\n    /**\\n     * @dev \\u63a5\\u6536 ETH\\n     */\\n    receive() external payable {}\\n}\\n\",\"keccak256\":\"0xc7921504761005b0117d4be7db1a90d57489feb09f701b907b9cc237ffd3caf4\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161062038038061062083398101604081905261002f91610054565b600080546001600160a01b0319166001600160a01b0392909216919091179055610084565b60006020828403121561006657600080fd5b81516001600160a01b038116811461007d57600080fd5b9392505050565b61058d806100936000396000f3fe6080604052600436106100735760003560e01c80638da5cb5b1161004e5780638da5cb5b146100d2578063a32c1e411461010a578063ddf4acf314610140578063f9e823e61461016d57600080fd5b80625b44871461007f57806312065fe0146100a85780633ccfd60b146100bb57600080fd5b3661007a57005b600080fd5b34801561008b57600080fd5b5061009560015481565b6040519081526020015b60405180910390f35b3480156100b457600080fd5b5047610095565b3480156100c757600080fd5b506100d0610180565b005b3480156100de57600080fd5b506000546100f2906001600160a01b031681565b6040516001600160a01b03909116815260200161009f565b34801561011657600080fd5b506100956101253660046103e3565b6001600160a01b031660009081526002602052604090205490565b34801561014c57600080fd5b5061009561015b3660046103e3565b60026020526000908152604090205481565b6100d061017b366004610429565b61030b565b6000546001600160a01b031633146101e95760405162461bcd60e51b815260206004820152602160248201527f4f6e6c79206f776e65722063616e2063616c6c20746869732066756e6374696f6044820152603760f91b60648201526084015b60405180910390fd5b478061022e5760405162461bcd60e51b81526020600482015260146024820152734e6f2066756e647320746f20776974686472617760601b60448201526064016101e0565b600080546040516001600160a01b039091169083908381818185875af1925050503d806000811461027b576040519150601f19603f3d011682016040523d82523d6000602084013e610280565b606091505b50509050806102c55760405162461bcd60e51b815260206004820152601160248201527015da5d1a191c985dd85b0819985a5b1959607a1b60448201526064016101e0565b6000546040518381526001600160a01b03909116907f84511ecc081974f18e7f3e0dcc19db078b55bbd3852ddd0dd85b3aebb7bf94c29060200160405180910390a25050565b600034116103695760405162461bcd60e51b815260206004820152602560248201527f5061796d656e7420616d6f756e74206d75737420626520677265617465722074604482015264068616e20360dc1b60648201526084016101e0565b346001600082825461037b91906104da565b9091555050336000908152600260205260408120805434929061039f9084906104da565b909155505060405133907f8dfc1109af223bb7f4e48f38a8a7631f492f0106b90747a651bf181b0fc4e402906103d89034908590610501565b60405180910390a250565b6000602082840312156103f557600080fd5b81356001600160a01b038116811461040c57600080fd5b9392505050565b634e487b7160e01b600052604160045260246000fd5b60006020828403121561043b57600080fd5b813567ffffffffffffffff8082111561045357600080fd5b818401915084601f83011261046757600080fd5b81358181111561047957610479610413565b604051601f8201601f19908116603f011681019083821181831017156104a1576104a1610413565b816040528281528760208487010111156104ba57600080fd5b826020860160208301376000928101602001929092525095945050505050565b808201808211156104fb57634e487b7160e01b600052601160045260246000fd5b92915050565b82815260006020604081840152835180604085015260005b8181101561053557858101830151858201606001528201610519565b506000606082860101526060601f19601f83011685010192505050939250505056fea2646970667358221220e44bec5f5f0e4a065e808a1e3e0755c2d85ec4b59870e7455833b8b3cad6db4164736f6c63430008140033",
+  "deployedBytecode": "0x6080604052600436106100735760003560e01c80638da5cb5b1161004e5780638da5cb5b146100d2578063a32c1e411461010a578063ddf4acf314610140578063f9e823e61461016d57600080fd5b80625b44871461007f57806312065fe0146100a85780633ccfd60b146100bb57600080fd5b3661007a57005b600080fd5b34801561008b57600080fd5b5061009560015481565b6040519081526020015b60405180910390f35b3480156100b457600080fd5b5047610095565b3480156100c757600080fd5b506100d0610180565b005b3480156100de57600080fd5b506000546100f2906001600160a01b031681565b6040516001600160a01b03909116815260200161009f565b34801561011657600080fd5b506100956101253660046103e3565b6001600160a01b031660009081526002602052604090205490565b34801561014c57600080fd5b5061009561015b3660046103e3565b60026020526000908152604090205481565b6100d061017b366004610429565b61030b565b6000546001600160a01b031633146101e95760405162461bcd60e51b815260206004820152602160248201527f4f6e6c79206f776e65722063616e2063616c6c20746869732066756e6374696f6044820152603760f91b60648201526084015b60405180910390fd5b478061022e5760405162461bcd60e51b81526020600482015260146024820152734e6f2066756e647320746f20776974686472617760601b60448201526064016101e0565b600080546040516001600160a01b039091169083908381818185875af1925050503d806000811461027b576040519150601f19603f3d011682016040523d82523d6000602084013e610280565b606091505b50509050806102c55760405162461bcd60e51b815260206004820152601160248201527015da5d1a191c985dd85b0819985a5b1959607a1b60448201526064016101e0565b6000546040518381526001600160a01b03909116907f84511ecc081974f18e7f3e0dcc19db078b55bbd3852ddd0dd85b3aebb7bf94c29060200160405180910390a25050565b600034116103695760405162461bcd60e51b815260206004820152602560248201527f5061796d656e7420616d6f756e74206d75737420626520677265617465722074604482015264068616e20360dc1b60648201526084016101e0565b346001600082825461037b91906104da565b9091555050336000908152600260205260408120805434929061039f9084906104da565b909155505060405133907f8dfc1109af223bb7f4e48f38a8a7631f492f0106b90747a651bf181b0fc4e402906103d89034908590610501565b60405180910390a250565b6000602082840312156103f557600080fd5b81356001600160a01b038116811461040c57600080fd5b9392505050565b634e487b7160e01b600052604160045260246000fd5b60006020828403121561043b57600080fd5b813567ffffffffffffffff8082111561045357600080fd5b818401915084601f83011261046757600080fd5b81358181111561047957610479610413565b604051601f8201601f19908116603f011681019083821181831017156104a1576104a1610413565b816040528281528760208487010111156104ba57600080fd5b826020860160208301376000928101602001929092525095945050505050565b808201808211156104fb57634e487b7160e01b600052601160045260246000fd5b92915050565b82815260006020604081840152835180604085015260005b8181101561053557858101830151858201606001528201610519565b506000606082860101526060601f19601f83011685010192505050939250505056fea2646970667358221220e44bec5f5f0e4a065e808a1e3e0755c2d85ec4b59870e7455833b8b3cad6db4164736f6c63430008140033",
+  "devdoc": {
+    "details": "一个简单的代理支付合约，用于演示部署到 Monad 测试链",
+    "kind": "dev",
+    "methods": {
+      "getBalance()": {
+        "details": "获取合约余额"
+      },
+      "getUserTotalPayment(address)": {
+        "details": "获取用户总支付金额"
+      },
+      "makePayment(string)": {
+        "details": "接收支付",
+        "params": {
+          "message": "支付消息"
+        }
+      },
+      "withdraw()": {
+        "details": "提取合约中的资金（仅所有者）"
+      }
+    },
+    "title": "AgentPayment",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 18,
+        "contract": "contracts/AgentPayment.sol:AgentPayment",
+        "label": "owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 20,
+        "contract": "contracts/AgentPayment.sol:AgentPayment",
+        "label": "totalPayments",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 24,
+        "contract": "contracts/AgentPayment.sol:AgentPayment",
+        "label": "userPayments",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
