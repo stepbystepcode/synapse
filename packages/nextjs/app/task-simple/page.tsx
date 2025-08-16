@@ -14,9 +14,15 @@ export default function TaskSimplePage() {
   const [message, setMessage] = useState("");
 
   // 读取合约数据
-  const { data: taskCount } = useScaffoldReadContract({
+  const { data: taskCount, refetch: refetchTaskCount } = useScaffoldReadContract({
     contractName: "AgentTaskManagerSimple",
     functionName: "getTaskCount",
+  });
+
+  const { data: allTasks, refetch: refetchAllTasks } = useScaffoldReadContract({
+    contractName: "AgentTaskManagerSimple",
+    functionName: "getAllTasks",
+    args: [BigInt(0), BigInt(10)], // 获取前10个任务
   });
 
   // 写入合约
@@ -60,7 +66,13 @@ export default function TaskSimplePage() {
         value: rewardAmount,
       });
 
-      setMessage("✅ 任务创建成功！");
+      // 刷新任务总数并计算新任务ID
+      await refetchTaskCount();
+      await refetchAllTasks();
+      const newTaskCount = taskCount ? Number(taskCount) + 1 : 1;
+      const taskId = newTaskCount - 1; // 新创建的任务ID
+      setMessage(`✅ 任务创建成功！任务ID: ${taskId}`);
+      
       setPrompt("");
       setReward("0.01");
     } catch (error) {
@@ -163,6 +175,42 @@ export default function TaskSimplePage() {
             {loading ? "处理中..." : "创建任务"}
           </button>
         </div>
+      </div>
+
+      {/* 任务列表 */}
+      <div className="bg-base-200 p-6 rounded-lg mb-8">
+        <h2 className="text-xl font-semibold mb-4">📋 任务列表</h2>
+        {allTasks && allTasks.length > 0 ? (
+          <div className="space-y-4">
+            {allTasks.map((task: any, index: number) => (
+              <div key={index} className="border border-gray-300 rounded-lg p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-semibold">任务 #{index}</h3>
+                  <span className={`px-2 py-1 rounded text-xs ${
+                    task.state === 0 ? 'bg-blue-100 text-blue-800' :
+                    task.state === 1 ? 'bg-yellow-100 text-yellow-800' :
+                    task.state === 2 ? 'bg-orange-100 text-orange-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {task.state === 0 ? '开放' : 
+                     task.state === 1 ? '进行中' : 
+                     task.state === 2 ? '已完成' : '已审核'}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mb-2">{task.prompt}</p>
+                <div className="text-xs text-gray-500 space-y-1">
+                  <p>奖励: {Number(task.reward) / 1e18} MON</p>
+                  <p>创建者: {task.creator}</p>
+                  {task.worker !== '0x0000000000000000000000000000000000000000' && (
+                    <p>工作者: {task.worker}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">暂无任务</p>
+        )}
       </div>
 
       {/* 快速操作 */}
